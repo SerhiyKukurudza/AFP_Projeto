@@ -129,7 +129,7 @@ int main()
             break;
         case 8:
             system("cls");
-            //iniciarPedidoVoo(aeronave);
+            iniciarPedidoVoo(aeronave);
             break;
         case 9:
             system("cls");
@@ -1089,8 +1089,10 @@ void listarAeronavesPorId(TipoFrota aeronave[]) // 4
 
         if ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves))
         {
-            gotoxy(40,31);
-            printf("ERRO: Voce intoduziu o numero da aeronave que nao existe, reintroduze o valor.");
+            gotoxy(57,31);
+            printf("ERRO: Voce intoduziu o valor invalido,");
+            gotoxy(54,32);
+            printf("reintroduze o valor dentro dos apresentados.");
             Sleep(2000);
             system("cls");
         }
@@ -1103,7 +1105,7 @@ void listarAeronavesPorId(TipoFrota aeronave[]) // 4
     for(int i = 0; i < 1; i++)
     {
         gotoxy(40,j);
-        printf("---------Aeronave N%c%d---------",167,aeronaveEscolhida);
+        printf("---------Aeronave N%c%d---------",167,aeronaveEscolhida + 1);
         j++;
         gotoxy(40,j);
         printf("ID da aeronave: %d",aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].id);
@@ -1313,67 +1315,71 @@ void adicionarAeronave(TipoFrota aeronave[]) // 5
 //}
 
 
-/* void iniciarPedidoVoo(TipoFrota aeronave[]) // 8
+void iniciarPedidoVoo(TipoFrota aeronave[]) // 8
 {
     int position = 1;
     int keyPressed = 0;
-    int opcao, j = 12, l = 12, numAeronave, aeronaveEscolhida;
+    int opcao, j = 12, l = 12, numAeronave = 1, aeronaveEscolhida;
     char estadoTemp[2][20] = {"Pronto","Autorizado"};
-    char strOrdenarNomes[50];
-    char localizacaoTemp[3][20] = {"Vila Real","Tires","Portimao"};
+    //char strOrdenarNomes[50];
+    //char localizacaoTemp[3][20] = {"Vila Real","Tires","Portimao"};
 
-    do
+
+    while (keyPressed != 13)
     {
-        while (keyPressed != 13)
+        system("cls");
+        desenharBox(80,36);
+        gotoxy(67,7);
+        printf("Iniciar pedido de voo");
+        gotoxy(40,10);
+        printf("Pretende listar todas as aeronaves prontas ou por localizacao especifica:");
+        gotoxy(40,12);
+        seta(1,position);
+        printf("Listar todas as aeronaves prontas");
+        gotoxy(40,13);
+        seta(2,position);
+        printf("Localizacao Especifica");
+
+        keyPressed = getch();
+
+        if(keyPressed == 80 && position != 2)
         {
-            system("cls");
-            desenharBox(80,50);
-            gotoxy(43,7);
-            printf("Iniciar pedido de voo");
-            gotoxy(40,9);
-            printf("Pretende listar todas as aeronaves prontas ou por localizacao especifica:");
-            gotoxy(40,11);
-            seta(1,position);
-            printf("Listar todas as aeronaves");
-            gotoxy(40,12);
-            seta(2,position);
-            printf("Localizacao Especifica");
-
-            keyPressed = getch();
-
-            if(keyPressed == 80 && position != 2)
-            {
-                position++;
-            }
-            else if(keyPressed == 72 && position != 1)
-            {
-                position--;
-            }
-            else
-            {
-                position = position;
-            }
+            position++;
         }
-
-        opcao = position;
-
-        position = 1;
-        keyPressed = 0;
-
-        switch(opcao)
+        else if(keyPressed == 72 && position != 1)
         {
-        case 1:
+            position--;
+        }
+        else
+        {
+            position = position;
+        }
+    }
+
+    opcao = position;
+
+    position = 1;
+    keyPressed = 0;
+
+    switch(opcao)
+    {
+    case 1:
+        do
+        {
+            j = 12;
+            l = 12;
+            numAeronave = 1;
 
             system("cls");
-            desenharBox(80,50);
-            gotoxy(56,7);
+            desenharBox(80,36);
+            gotoxy(67,7);
             printf("Iniciar pedido de voo");
             gotoxy(40,10);
             printf("A listar todas as aeronaves em estado pronto:");
 
             for(int i = 0; i < aeronave[0].totalAeronaves; i++)
             {
-                if((strcmp(aeronave[i].aeronaves[i].estado, estadoPronto) == 0) && (i <= 4))
+                if((strcmp(aeronave[i].aeronaves[i].estado, estadoTemp[0]) == 0) && (i <= 4))
                 {
                     gotoxy(40,j);
                     printf("---------Aeronave N%c%d---------",167,numAeronave);
@@ -1383,7 +1389,7 @@ void adicionarAeronave(TipoFrota aeronave[]) // 5
                     j += 2;
                     numAeronave++;
                 }
-                else if((strcmp(aeronave[i].aeronaves[i].estado, estadoPronto) == 0) && (i >= 5))
+                else if((strcmp(aeronave[i].aeronaves[i].estado, estadoTemp[0]) == 0) && (i >= 5))
                 {
                     gotoxy(80,l);
                     printf("---------Aeronave N%c%d---------",167,numAeronave);
@@ -1402,189 +1408,240 @@ void adicionarAeronave(TipoFrota aeronave[]) // 5
 
             if ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves))
             {
-                gotoxy(40,31);
-                printf("ERRO: Voce intoduziu o numero da aeronave que nao existe, reintroduze o valor.");
+                gotoxy(57,31);
+                printf("ERRO: Voce intoduziu o valor invalido,");
+                gotoxy(54,32);
+                printf("reintroduze o valor dentro dos apresentados.");
                 Sleep(2000);
                 system("cls");
             }
+
         }
         while ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves));
 
+        aeronaveEscolhida -= 1;
 
+        gotoxy(58,32);
+        printf("Foi escolhida a aeronave N%c%d com ID: %d",167,aeronaveEscolhida + 1,aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].id);
+        Sleep(2000);
 
+        //recolher dados dos passageiros
+        system("cls");
+        desenharBox(80,36);
+        gotoxy(67,7);
+        printf("Iniciar pedido de voo");
+        gotoxy(59,10);
+        printf("Introduza os dados dos passageiros:");
+        j = 12;
+        l = 12;
+        for(int i = 0; i < aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].capacidade; i++)
+        {
+            if(i < 2)
+            {
+                gotoxy(40,j);
+                printf("Introduza o NIF do %d passageiro:", i+1);
+                j++;
+                gotoxy(40,j);
+                printf("---> ");
+                scanf("%ld",&aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].manifesto[i].nif);
+                fflush(stdin);
+                j += 2;
+                gotoxy(40,j);
+                printf("Introduza o nome do %d passageiro:", i+1);
+                j++;
+                gotoxy(40,j);
+                printf("---> ");
+                gets(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].manifesto[i].nome);
+                fflush(stdin);
+                j += 2;
+            }
+            else
+            {
+                gotoxy(80,l);
+                printf("Introduza o NIF do %d passageiro:", i+1);
+                l++;
+                gotoxy(80,l);
+                printf("---> ");
+                scanf("%ld",&aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].manifesto[i].nif);
+                fflush(stdin);
+                l += 2;
+                gotoxy(80,l);
+                printf("Introduza o nome do %d passageiro:", i+1);
+                l++;
+                gotoxy(80,l);
+                printf("---> ");
+                gets(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].manifesto[i].nome);
+                fflush(stdin);
+                l += 2;
+            }
+        }
+
+        gotoxy(43,29);
+        printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+
+        getch();
 
         break;
 
     case 2:
-        strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].estado, estadoTemp[1]);
+        printf("Hello");
+        Sleep(1000);
         break;
 
     default:
         break;
     }
+}
 
 
-
-    //recolher dados dos passageiros
-    printf("Introduza os dados dos passageiros:\n");
-    for(int i = 0; i < aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].capacidade; i++)
-    {
-        printf("\nIntroduza o NIF do %d passageiro:\n--->", i+1);
-        scanf("%ld",&aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[i].nif);
-        fflush(stdin);
-        printf("\nIntroduza o nome do %d passageiro:\n--->", i+1);
-        gets(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[i].nome);
-        fflush(stdin);
-    }
-
-    //ordenar nomes por ordem alfabetica
-    for(int i = 0; i < aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].capacidade; i++)
-    {
-        for(int j = i+1; j < aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].capacidade; j++)
-        {
-            if(strcmp(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[i].nome,aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[j].nome)>0)
-            {
-                strcpy(strOrdenarNomes,aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[i].nome);
-                strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[i].nome,aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[j].nome);
-                strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[j].nome,strOrdenarNomes);
-            }
-        }
-    }
+//    //ordenar nomes por ordem alfabetica
+//    for(int i = 0; i < aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].capacidade; i++)
+//    {
+//        for(int j = i+1; j < aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].capacidade; j++)
+//        {
+//            if(strcmp(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[i].nome,aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[j].nome)>0)
+//            {
+//                strcpy(strOrdenarNomes,aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[i].nome);
+//                strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[i].nome,aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[j].nome);
+//                strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].manifesto[j].nome,strOrdenarNomes);
+//            }
+//        }
+//    }
 
 
-    //atribuicao do destino da aeronave
-    if(opcaoLocalizacao == 1)
-    {
-        while (keyPressed != 13)
-        {
-            system("cls");
-            printf("Selecione o destino da aeronave:\n");
-            seta(1,position);
-            printf("Tires\n");
-            seta(2,position);
-            printf("Portimao\n");
+//    atribuicao do destino da aeronave
+//    if(opcaoLocalizacao == 1)
+//    {
+//        while (keyPressed != 13)
+//        {
+//            system("cls");
+//            printf("Selecione o destino da aeronave:\n");
+//            seta(1,position);
+//            printf("Tires\n");
+//            seta(2,position);
+//            printf("Portimao\n");
+//
+//            keyPressed = getch();
+//
+//            if(keyPressed == 80 && position != 3)
+//            {
+//                position++;
+//            }
+//            else if(keyPressed == 72 && position != 1)
+//            {
+//                position--;
+//            }
+//            else
+//            {
+//                position = position;
+//            }
+//        }
+//
+//        opcaoDestino = position;
+//
+//        position = 1;
+//        keyPressed = 0;
+//
+//        switch(opcaoDestino)
+//        {
+//        case 1:
+//            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[1]);
+//            break;
+//        case 2:
+//            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[2]);
+//            break;
+//        default:
+//            break;
+//        }
+//    }
+//
+//    else if(opcaoLocalizacao == 2)
+//    {
+//        while (keyPressed != 13)
+//        {
+//            system("cls");
+//            printf("Selecione o destino da aeronave:\n");
+//            seta(1,position);
+//            printf("Vila Real\n");
+//            seta(2,position);
+//            printf("Portimao\n");
+//
+//            keyPressed = getch();
+//
+//            if(keyPressed == 80 && position != 3)
+//            {
+//                position++;
+//            }
+//            else if(keyPressed == 72 && position != 1)
+//            {
+//                position--;
+//            }
+//            else
+//            {
+//                position = position;
+//            }
+//        }
+//
+//        opcaoDestino = position;
+//
+//        position = 1;
+//        keyPressed = 0;
+//
+//        switch(opcaoDestino)
+//        {
+//        case 1:
+//            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[0]);
+//            break;
+//        case 2:
+//            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[2]);
+//            break;
+//        default:
+//            break;
+//        }
+//    }
+//
+//    else
+//    {
+//        while (keyPressed != 13)
+//        {
+//            system("cls");
+//            printf("Selecione o destino da aeronave:\n");
+//            seta(1,position);
+//            printf("Vila Real\n");
+//            seta(2,position);
+//            printf("Tires\n");
+//
+//            keyPressed = getch();
+//
+//            if(keyPressed == 80 && position != 3)
+//            {
+//                position++;
+//            }
+//            else if(keyPressed == 72 && position != 1)
+//            {
+//                position--;
+//            }
+//            else
+//            {
+//                position = position;
+//            }
+//        }
+//
+//        opcaoDestino = position;
+//
+//        position = 1;
+//        keyPressed = 0;
+//
+//        switch(opcaoDestino)
+//        {
+//        case 1:
+//            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[0]);
+//            break;
+//        case 2:
+//            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[1]);
+//            break;
+//        default:
+//            break;
+//        }
+//    }
 
-            keyPressed = getch();
-
-            if(keyPressed == 80 && position != 3)
-            {
-                position++;
-            }
-            else if(keyPressed == 72 && position != 1)
-            {
-                position--;
-            }
-            else
-            {
-                position = position;
-            }
-        }
-
-        opcaoDestino = position;
-
-        position = 1;
-        keyPressed = 0;
-
-        switch(opcaoDestino)
-        {
-        case 1:
-            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[1]);
-            break;
-        case 2:
-            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[2]);
-            break;
-        default:
-            break;
-        }
-    }
-
-    else if(opcaoLocalizacao == 2)
-    {
-        while (keyPressed != 13)
-        {
-            system("cls");
-            printf("Selecione o destino da aeronave:\n");
-            seta(1,position);
-            printf("Vila Real\n");
-            seta(2,position);
-            printf("Portimao\n");
-
-            keyPressed = getch();
-
-            if(keyPressed == 80 && position != 3)
-            {
-                position++;
-            }
-            else if(keyPressed == 72 && position != 1)
-            {
-                position--;
-            }
-            else
-            {
-                position = position;
-            }
-        }
-
-        opcaoDestino = position;
-
-        position = 1;
-        keyPressed = 0;
-
-        switch(opcaoDestino)
-        {
-        case 1:
-            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[0]);
-            break;
-        case 2:
-            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[2]);
-            break;
-        default:
-            break;
-        }
-    }
-
-    else
-    {
-        while (keyPressed != 13)
-        {
-            system("cls");
-            printf("Selecione o destino da aeronave:\n");
-            seta(1,position);
-            printf("Vila Real\n");
-            seta(2,position);
-            printf("Tires\n");
-
-            keyPressed = getch();
-
-            if(keyPressed == 80 && position != 3)
-            {
-                position++;
-            }
-            else if(keyPressed == 72 && position != 1)
-            {
-                position--;
-            }
-            else
-            {
-                position = position;
-            }
-        }
-
-        opcaoDestino = position;
-
-        position = 1;
-        keyPressed = 0;
-
-        switch(opcaoDestino)
-        {
-        case 1:
-            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[0]);
-            break;
-        case 2:
-            strcpy(aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].destino, localizacaoTemp[1]);
-            break;
-        default:
-            break;
-        }
-    }
-} */
