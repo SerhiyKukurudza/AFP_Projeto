@@ -237,7 +237,7 @@ void adicionarAeronaveFrota(TipoFrota aeronave[])                               
         gotoxy(55,12);
         printf("Limite maximo das aeronaves foi atingido,");
         gotoxy(45,14);
-        printf("elimine alguma aeronave para poder adicionar outra aeronave.");
+        printf("Elimine alguma aeronave para poder adicionar outra aeronave.");
         gotoxy(53,20);
         printf("A voltar para menu principal em:");
         for(int i = 5; i > 0; i--)
@@ -252,22 +252,6 @@ void adicionarAeronaveFrota(TipoFrota aeronave[])                               
     //atribuicao do ID da aeronave
     aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].id = aeronave[0].idContador;
 
-
-//    do
-//    {
-//        printf("Introduza o numero de ID da aeronave:\n--->");
-//        scanf("%d",&idTemp);
-//        fflush(stdin);
-//        if(verificaIgualdadeID(aeronave, idTemp) != 0)
-//        {
-//            printf("ERRO: O ID ja existe, reintroduza o ID da aeronave.\n");
-//        }
-//    }
-//    while (verificaIgualdadeID(aeronave, idTemp) != 0);
-//    aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].id = idTemp;
-//    fflush(stdin);
-
-
     //recolher do valor da capacidade
     do
     {
@@ -277,7 +261,7 @@ void adicionarAeronaveFrota(TipoFrota aeronave[])                               
         gotoxy(60,10);
         printf("Introduza os dados da %d aeronave", aeronave[0].totalAeronaves);
         gotoxy(38,12);
-        printf("Introduza a capacidade maxima de passageirosos (No minimo 2 e no maximo 4):");
+        printf("Introduza a capacidade maxima de passageiros (No minimo 2 e no maximo 4):");
         gotoxy(38,13);
         printf("---> ");
         scanf("%d",&aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].capacidade);
@@ -286,7 +270,7 @@ void adicionarAeronaveFrota(TipoFrota aeronave[])                               
         if ((aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].capacidade < 2) || (aeronave[quantidadaAeronaves].aeronaves[quantidadaAeronaves].capacidade > 4))
         {
             gotoxy(40,15);
-            printf("ERRO: Voce intoduziu a quantidade incorreta, reintroduza a quantidade.\n");
+            printf("ERRO: Voce introduziu a quantidade incorreta, reintroduza a quantidade.\n");
             Sleep(2000);
             system("cls");
 
@@ -358,11 +342,9 @@ void adicionarAeronaveFrota(TipoFrota aeronave[])                               
     printf("Foi atribuido estado pronto a aeronave");
 
     gotoxy(43,23);
-    printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+    printf("Pressione one qual quer tecla do teclado para voltar ao menu principal");
 
     getch();
-
-    //registo de ultimos 3 voos --- fazer na parte de autorizar aeronave
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void eliminarAeronaveFrota(TipoFrota aeronave[])                                // 2 - Eliminar aeronave da frota // falta fazer
@@ -444,9 +426,9 @@ void eliminarAeronaveFrota(TipoFrota aeronave[])                                
         else if ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves))
         {
             gotoxy(57,51);
-            printf("ERRO: Voce intoduziu o valor invalido,");
+            printf("ERRO: Voce introduziu o valor invalido,");
             gotoxy(54,52);
-            printf("reintroduze o valor dentro dos apresentados.");
+            printf("reintroduza o valor dentro dos apresentados.");
             Sleep(2000);
             system("cls");
         }
@@ -480,10 +462,10 @@ void eliminarAeronaveFrota(TipoFrota aeronave[])                                
     }
 
     gotoxy(43,53);
-    printf("A aeronave escholhida foi eliminiado com sucesso");
+    printf("A aeronave escolhida foi eliminada com sucesso");
 
     gotoxy(43,55);
-    printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
     getch();
 }
@@ -580,9 +562,9 @@ void iniciarPedidoVoo(TipoFrota aeronave[])                                     
         else if ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves))
         {
             gotoxy(57,47);
-            printf("ERRO: Voce intoduziu o valor invalido,");
+            printf("ERRO: Voce introduziu o valor invalido,");
             gotoxy(54,48);
-            printf("reintroduze o valor dentro dos apresentados.");
+            printf("reintroduza o valor dentro dos apresentados.");
             Sleep(2000);
             system("cls");
         }
@@ -721,7 +703,7 @@ void iniciarPedidoVoo(TipoFrota aeronave[])                                     
             gotoxy(67,7);
             printf("Iniciar pedido de voo");
             gotoxy(40,10);
-            printf("Selecione o destino da aeronave:\n");
+            printf("Selecione o destino da aeronave:");
             gotoxy(40,12);
             seta(1,position);
             printf("Vila Real");
@@ -772,7 +754,7 @@ void iniciarPedidoVoo(TipoFrota aeronave[])                                     
             gotoxy(67,7);
             printf("Iniciar pedido de voo");
             gotoxy(40,10);
-            printf("Selecione o destino da aeronave:\n");
+            printf("Selecione o destino da aeronave:");
             gotoxy(40,12);
             seta(1,position);
             printf("Vila Real");
@@ -819,7 +801,7 @@ void iniciarPedidoVoo(TipoFrota aeronave[])                                     
     gotoxy(60,19);
     printf("Aeronave a aguardar autorizacao");
     gotoxy(43,24);
-    printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
     getch();
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -906,9 +888,9 @@ void autorizarVoo(TipoFrota aeronave[])                                         
         else if ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves))
         {
             gotoxy(57,47);
-            printf("ERRO: Voce intoduziu o valor invalido,");
+            printf("ERRO: Voce introduziu o valor invalido,");
             gotoxy(54,48);
-            printf("reintroduze o valor dentro dos apresentados.");
+            printf("reintroduza o valor dentro dos apresentados.");
             Sleep(2000);
             system("cls");
         }
@@ -920,7 +902,7 @@ void autorizarVoo(TipoFrota aeronave[])                                         
     gotoxy(58,47);
     printf("Foi escolhida a aeronave N%c%d com ID: %d",167,aeronaveEscolhida + 1,aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].id);
 
-    if(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].numVoos < 2)
+    if(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].numVoos < 99)
     {
         aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].numVoos += 1;
         strcpy(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].estado, estadoTemp[0]);
@@ -937,7 +919,7 @@ void autorizarVoo(TipoFrota aeronave[])                                         
     printf("Aeronave efetuou a viagem com sucesso");
 
     gotoxy(43,51);
-    printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
     getch();
 }
@@ -946,7 +928,7 @@ void cancelarVoo(TipoFrota aeronave[])                                          
 {
     int j = 12, l = 12, aeronaveEscolhida, numAeronave = 1;
     char estadoAutorizacao[30] = {"A aguardar autorizacao"};
-    char estadoTemp[2][20] = {"Pronto","Fora de Servico"};
+    char estadoPronto[20] = {"Pronto"};
 
     do
     {
@@ -1025,9 +1007,9 @@ void cancelarVoo(TipoFrota aeronave[])                                          
         else if ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves))
         {
             gotoxy(57,47);
-            printf("ERRO: Voce intoduziu o valor invalido,");
+            printf("ERRO: Voce introduziu o valor invalido,");
             gotoxy(54,48);
-            printf("reintroduze o valor dentro dos apresentados.");
+            printf("reintroduza o valor dentro dos apresentados.");
             Sleep(2000);
             system("cls");
         }
@@ -1039,7 +1021,7 @@ void cancelarVoo(TipoFrota aeronave[])                                          
     gotoxy(58,47);
     printf("Foi escolhida a aeronave N%c%d com ID: %d",167,aeronaveEscolhida + 1,aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].id);
 
-    strcpy(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].estado, estadoTemp[0]);
+    strcpy(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].estado, estadoPronto);
 
     for(int i = 0; i < aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].capacidade; i++)
     {
@@ -1052,7 +1034,7 @@ void cancelarVoo(TipoFrota aeronave[])                                          
     printf("O voo foi cancelado com sucesso");
 
     gotoxy(43,51);
-    printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
     getch();
 }
@@ -1175,7 +1157,7 @@ void listarAeronavesEstadoPronto(TipoFrota aeronave[])                          
         }
 
         gotoxy(43,50);
-        printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+        printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
         getch();
         break;
@@ -1284,7 +1266,7 @@ void listarAeronavesEstadoPronto(TipoFrota aeronave[])                          
             }
 
             gotoxy(43,50);
-            printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
             getch();
             break;
@@ -1350,7 +1332,7 @@ void listarAeronavesEstadoPronto(TipoFrota aeronave[])                          
             }
 
             gotoxy(43,50);
-            printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
             getch();
             break;
@@ -1416,7 +1398,7 @@ void listarAeronavesEstadoPronto(TipoFrota aeronave[])                          
             }
 
             gotoxy(43,50);
-            printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
             getch();
             break;
@@ -1541,7 +1523,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota aeronave[])                     
         }
 
         gotoxy(43,50);
-        printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+        printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
         getch();
         break;
@@ -1650,7 +1632,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota aeronave[])                     
             }
 
             gotoxy(43,50);
-            printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
             getch();
             break;
@@ -1716,7 +1698,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota aeronave[])                     
             }
 
             gotoxy(43,50);
-            printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
             getch();
             break;
@@ -1782,7 +1764,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota aeronave[])                     
             }
 
             gotoxy(43,50);
-            printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
             getch();
             break;
@@ -1848,9 +1830,9 @@ void consultarAeronavePorId(TipoFrota aeronave[])                               
         if ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves))
         {
             gotoxy(57,31);
-            printf("ERRO: Voce intoduziu o valor invalido,");
+            printf("ERRO: Voce introduziu o valor invalido,");
             gotoxy(54,32);
-            printf("reintroduze o valor dentro dos apresentados.");
+            printf("reintroduza o valor dentro dos apresentados.");
             Sleep(2000);
             system("cls");
         }
@@ -1900,7 +1882,7 @@ void consultarAeronavePorId(TipoFrota aeronave[])                               
     }
 
     gotoxy(43,48);
-    printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
     getch();
 }
