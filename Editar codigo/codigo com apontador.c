@@ -41,6 +41,7 @@ typedef struct
     int totalPassageiros;
     int idContador;
     int totalAeronaves;
+    int totalFrota;
     TipoAeronave aeronaves[10];
 } TipoFrota;
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -62,6 +63,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *f);                    // 9 - L
 void consultarAeronavePorId(TipoFrota *f);                              // 10 - Consultar aeronave inserindo o ID disponivel
 void gravarListagemAeronaves(TipoFrota *f);                   //Parte 2 // 11 - Gravar listagem de aeronaves para ficheiro de texto
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
+void listaAeronaves(TipoFrota *frota, int *n1);
 
 int main()                                                                      // Main do projeto
 {
@@ -156,10 +158,10 @@ int implementacaoMenu(int opcao)                                                
         printf("Menu principal");
         gotoxy(38,10);
         seta(1,position);
-        printf("1. Adicionar aeronave a frota");
+        printf(GRN"1. Adicionar aeronave a frota"RESET);
         gotoxy(38,11);
         seta(2,position);
-        printf("2. Eliminar aeronave da frota");
+        printf(GRN"2. Eliminar aeronave da frota"RESET);
         gotoxy(38,12);
         seta(3,position);
         printf(RED"3. Editar aeronave (Parte 2)"RESET);
@@ -268,8 +270,8 @@ void adicionarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char l
     {
         desenharBox(80,36);
         gotoxy(63,7);
-        printf("Adicionar Aeronave a Frota:");
-        gotoxy(60,10);
+        printf("Adicionar Aeronave a Frota");
+        gotoxy(59,10);
         printf("Introduza os dados da %d aeronave", (posicaoAeronave+1));
         gotoxy(38,12);
         printf("Introduza a capacidade maxima de passageiros (No minimo 2 e no maximo 4):");
@@ -295,8 +297,8 @@ void adicionarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char l
         system("cls");
         desenharBox(80,36);
         gotoxy(63,7);
-        printf("Adicionar Aeronave a Frota:");
-        gotoxy(60,10);
+        printf("Adicionar Aeronave a Frota");
+        gotoxy(59,10);
         printf("Introduza os dados da %d aeronave", posicaoAeronave + 1);
         gotoxy(40,12);
         printf("Selecione a localizacao atual da aeronave:");
@@ -353,35 +355,21 @@ void adicionarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char l
     printf("Foi atribuido estado pronto a aeronave");
 
     gotoxy(43,23);
-    printf("Pressione one qual quer tecla do teclado para voltar ao menu principal");
+    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
     getch();
 }
-
-
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void eliminarAeronaveFrota(TipoFrota *frota)                                // 2 - Eliminar aeronave da frota // falta fazer
+void listaAeronaves(TipoFrota *frota, int *n1)
 {
     int j = 12, l = 12;
-    int aeronaveEscolhida, aeronaveEncontrada, posicaoAeronave  = 0;
-
-    do
-    {
-        j = 12;
-        l = 12;
-        system("cls");
-        desenharBox(80,57);
-        gotoxy(65,7);
-        printf("Eliminar aeronave da frota");
-        gotoxy(40,10);
-        printf("A listar todas as aeronaves:");
-
-        for(int i = 0; i < frota->totalAeronaves; i++)
+    *n1 = 1;
+    for(int i = 0; i < 10; i++)
         {
             if((frota->aeronaves[i].id != 0) && (i <= 4))
             {
                 gotoxy(40,j);
-                printf("---------Aeronave N%c%d---------",167, i+1);
+                printf("---------Aeronave N%c%d---------",167, *n1);
                 j++;
                 gotoxy(40,j);
                 printf("ID da aeronave: %d",frota->aeronaves[i].id);
@@ -398,6 +386,7 @@ void eliminarAeronaveFrota(TipoFrota *frota)                                // 2
                 gotoxy(40,j);
                 printf("Local atual: %s",frota->aeronaves[i].local);
                 j += 2;
+                *n1 += 1;
             }
             else if((frota->aeronaves[i].id != 0) && (i >= 5))
             {
@@ -419,8 +408,43 @@ void eliminarAeronaveFrota(TipoFrota *frota)                                // 2
                 gotoxy(80,l);
                 printf("Local atual: %s",frota->aeronaves[i].local);
                 l += 2;
+                *n1 += 1;
             }
         }
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------
+void eliminarAeronaveFrota(TipoFrota *frota)                                // 2 - Eliminar aeronave da frota // falta fazer
+{
+    int aeronaveEscolhida = 0, aeronaveEncontrada = 0, posicaoAeronave  = 0, numeroAeronave;
+
+    do
+    {
+        listaAeronaves(frota, &numeroAeronave);
+
+        if(numeroAeronave == 1)
+        {
+            system("cls");
+            desenharBox(80,36);
+            gotoxy(64,7);
+            printf("Eliminar aeronave da frota");
+            gotoxy(40,15);
+            printf("De momento nao ha aeronaves para eliminar,");
+            gotoxy(40,17);
+            printf("pode adicionar aeronave atravez da opcao \"1\" no menhu principal");
+            gotoxy(43,21);
+            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
+            getch();
+            return;
+        }
+
+        system("cls");
+        desenharBox(80,57);
+        gotoxy(64,7);
+        printf("Eliminar aeronave da frota");
+        gotoxy(40,10);
+        printf("A listar todas as aeronaves:");
+
+        listaAeronaves(frota, &numeroAeronave);
 
         gotoxy(40,47);
         printf("Introduza o ID da aeronave que pretende eliminar");
@@ -430,9 +454,9 @@ void eliminarAeronaveFrota(TipoFrota *frota)                                // 2
         printf("---> ");
         scanf("%d",&aeronaveEscolhida);
 
-        for(int i = 0; i < frota->totalAeronaves; i++)
+        for(int i = 0; i < 10; i++)
         {
-            if(aeronaveEscolhida == 20)
+            if(aeronaveEscolhida == 0)
             {
                 return;
             }
@@ -444,18 +468,18 @@ void eliminarAeronaveFrota(TipoFrota *frota)                                // 2
         }
         if(aeronaveEncontrada == FALSE)
             {
-                gotoxy(57,51);
-                printf("ERRO: Voce introduziu o ID invalido,");
-                gotoxy(54,52);
-                printf("reintroduza o valor dentro dos apresentados.");
+                gotoxy(57,52);
+                printf(RED"ERRO: Voce introduziu o ID invalido,");
+                gotoxy(54,53);
+                printf("reintroduza o valor dentro dos apresentados."RESET);
                 Sleep(2000);
                 system("cls");
             }
     }
     while (aeronaveEncontrada == FALSE);
 
-    gotoxy(58,51);
-    printf("Foi escolhida a aeronave N%c%d com ID: %d",167, posicaoAeronave+1,frota->aeronaves[posicaoAeronave].id);
+    gotoxy(58,52);
+    printf(GRN"Foi escolhida a aeronave N%c%d com ID: %d"RESET,167, posicaoAeronave+1,frota->aeronaves[posicaoAeronave].id);
     Sleep(2000);
 
     frota->totalAeronaves -= 1;
@@ -478,10 +502,13 @@ void eliminarAeronaveFrota(TipoFrota *frota)                                // 2
         strcpy(frota->aeronaves[posicaoAeronave].manifesto[i].nome,"");
     }
 
-    gotoxy(43,53);
+    system("cls");
+    desenharBox(80,36);
+    gotoxy(64,7);
+    printf("Eliminar aeronave da frota");
+    gotoxy(54,14);
     printf("A aeronave escolhida foi eliminada com sucesso");
-
-    gotoxy(43,55);
+    gotoxy(43,21);
     printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
     getch();
