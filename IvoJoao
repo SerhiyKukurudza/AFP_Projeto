@@ -1,0 +1,446 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <locale.h> // necessário para usar setlocale Portuguese
+#define MAX_AERONAVE 10
+#define MAX_VOOS 10
+
+// Variaveis para guardar passageiro
+typedef struct TipoPassageiro
+{
+    long nif;
+    char nome [50];
+} TipoPassageiro ;
+
+// Variaveis para guardar as aeronaves
+typedef struct TipoAeronave
+{
+    int id;
+    int capacidade;
+    char estado; // <[p] pronto ou [a] autorizacao
+    struct TipoPassageiro manifesto; // por ordem alfabetica
+    char local [20]; // Vila Real, Tires ou Portimão
+    char destino [20]; // Vila Real, Tires ou Portimão (nao pode ser igual ao local)
+    char historico [3] [20]; // últimos 3 voos
+    int numVoos; // até 100
+} TipoAeronave;
+
+
+void menu()
+{
+    printf("============================================\n");
+    printf(" Gestão de Frota da Transportadora Aerea IPS\n");
+    printf("============================================\n\n");
+    printf(" \n Escolha uma das seguintes opções: ");
+    printf(" \n 1. Listar aeronaves");
+    printf(" \n 2. Listar Aeronaves no estado pronto" );
+    printf(" \n 3. Listar Aeronaves disponiveis para descolar" );   // opçoes do menu
+    printf(" \n 4. consultar Aeronave " );
+    printf(" \n 5. Aeronaves adicionar à frota" );
+    printf(" \n 6. Aeronaves eliminar à frota" );
+    printf(" \n 7. Aeronaves editar à frota" );
+    printf(" \n 8. Autorizar Voo" );
+    printf(" \n 9. Cancelar Voo " );
+    printf(" \n 10. Gravar listagem aeronaves para ficheiro " );
+    printf(" \n 11. Para sair. \n " );
+    printf(" \n Digite a opção desejada: ");
+
+}
+
+
+void Listar_aeronaves_detalhes(TipoAeronave aero[])
+{
+    int i;
+    printf("Listar Aeronave:");
+
+
+
+    for (i = 0; i < MAX_AERONAVE ; i++)   // linhas de codigo referentes a listagem da aeronaves onde usou-se um array paa criar as 10 aeronaves
+    {
+        // if (aero[i].id != 0)
+        // {
+        printf("\nID Aeronave: ................ %d ", aero[i].id);
+        printf("\n\tCapacidade da Aeronave: ... %d ", aero[i].capacidade);
+        printf("\n\testado:.................... %c ", aero[i].estado);
+        // printf("\nmanifesto:................. %c ", aero[i].manifesto);
+        printf("\n\tlocal:..................... %s", aero[i].local);
+        printf("\n\tdestino:................... %s", aero[i].destino);
+        // mostrar voos
+
+        for(int j=0 ; j<3 ; j++)
+        {
+            for(int l=0; l<j+1; l++)
+            {
+                //arr[j][l] = aero[i].historico[j][1];
+
+                //printf(" \n\tHistorico: .............. %s ",  &arr [j][l]);
+                l++;
+            }
+            j++;
+        }
+
+        printf("\n\tnumero voo:................ %d ", aero[i].numVoos);
+        printf("\n\n");
+        //}
+    }
+
+    system("PAUSE");
+    printf("\n\n");
+
+
+}
+
+void Listar_aeronaves_estado_pronto_detalhe(TipoAeronave aero[])
+{
+    printf("Listar aeronaves com estado pronto \n");
+
+    int i = 0;
+//    int arr[3][30]= {};
+
+    do
+    {
+
+        printf("\n\tID Aeronave: .............. %d ", aero[i].id);
+        printf("\n\tCapacidade da Aeronave: ... %d ", aero[i].capacidade);
+        printf("\n\testado:.................... %c \n ", aero[i].estado);
+        printf("\n\tlocal:..................... %s", aero[i].local);
+        printf("\n\tdestino:................... %s", aero[i].destino);
+        // mostrar voos
+
+        for(int j=0 ; j<3 ; j++)
+        {
+            for(int l=0; l<j+1; l++)
+            {
+//                arr[j][l] == aero[i].historico[j][1];
+
+//                printf(" \n\tHistorico: .............. %s ",  &arr [j][l]);
+                l++;
+            }
+            j++;
+        }
+
+        printf("\n\tnumero voo:................ %d ", aero[i].numVoos);
+        printf("\n\n");
+        i++;
+
+    }
+    while ((i < MAX_AERONAVE) && (aero[i].id != 0) && (aero[i].estado != 'a') );
+
+    system("PAUSE");
+
+    printf("\n\n");
+}
+
+void Listar_aeronaves_aguarda_autorizacao_detalhes(TipoAeronave aero[])
+{
+    printf("Listar aeronaves com estado autorizado \n");
+
+    int i,j, flag = 0;
+    char status = 'a'; // variavel que guarda o estado pretendido
+    char arr[3][30]= {};
+
+    printf("estado escolhido Autorizado");
+
+
+    for (i = 0; i < MAX_AERONAVE ; i++)
+    {
+        if (aero[i].estado == status)
+            flag = 1;
+        status = 'a';
+        break;
+    }
+    if ((flag == 1) && (status == 'a'))
+    {
+        for (j = 0; j < i+1 ; j++) // mostrar voos
+        {
+            printf("\n\tID Aeronave: .............. %d ", aero[j].id);
+            printf("\n\tCapacidade da Aeronave: ... %d ", aero[j].capacidade);
+            printf("\n\testado:.................... %c \n ", aero[j].estado);
+            printf("\n\tlocal:..................... %s", aero[i].local);
+            printf("\n\tdestino:................... %s", aero[i].destino);
+
+            for(int j=0 ; j<3 ; j++) // Ciclo para mostrar historico
+            {
+                for(int l=0; l<j+1; l++)
+                {
+//                    arr[j][l] = aero[i].historico[j][1];
+
+                    printf(" \n\tHistorico: .............. %s ",  arr [j]);
+                    l++;
+                }
+                j++;
+            }
+
+            printf("\n\tnumero voo:................ %d ", aero[i].numVoos);
+            printf("\n\n");
+
+
+            j++;
+        }
+        i++;
+    }
+    else printf ("não existem aeronaves disponiveis");
+
+
+    system("PAUSE");
+
+    printf("\n\n");
+}
+
+void Consultar_aeronaves(TipoAeronave aero[])
+{
+    printf("Consultar aeronave\n");
+    //----------------------------------------------------
+
+    int i,flag = 0;
+
+    int AeroProc = 0; // variavel para guardar a aeronave a procurar
+    printf("\nIndique o ID da Aeronave:");
+    scanf("%d", &AeroProc);
+
+    fflush(stdin);
+
+
+    for(i = 0; i<10; i++)
+    {
+        if(AeroProc ==aero[i].id) // verificar qual o elelmento da Struct que corresponde ao id
+        {
+            flag = 1;
+
+        }
+    }
+    if( flag == 1 ) // imprimir os detelhes da aeronave escolhida
+    {
+
+        printf("\nID Aeronave: ................ %d ", aero[AeroProc].id);
+        printf("\n\tCapacidade da Aeronave: ... %d ", aero[AeroProc].capacidade);
+        printf("\n\testado:.................... %c ", aero[AeroProc].estado);
+        // printf("\nmanifesto:................. %c ", aero[i].manifesto);
+        printf("\n\tlocal:..................... %s", aero[AeroProc].local);
+        printf("\n\tdestino:................... %s\n", aero[AeroProc].destino);
+    }
+    else
+    {
+        printf("não existe esse ID aeronave\n");
+    }
+    system("PAUSE");
+}
+
+//----------------------------------------------------
+
+
+void Adicionar_aeronaves(TipoAeronave aero[])
+{
+    int n;
+    printf("\nIndique o index da Aeronave no array:");
+    scanf("%d", &n);
+    fflush(stdin);
+    printf("\nIndique a ID da Aeronave:");
+    scanf("%d", &aero[n].id);
+    fflush(stdin);
+    printf("\nIndique a Capacidade da Aeronave (2 a 4):");
+    scanf("%d", &aero[n].capacidade);
+    fflush(stdin);
+    printf("\nEstado - [p] pronto ou [a] autorizacao:");
+    scanf("%c", &aero[n].estado);
+    fflush(stdin);
+    printf("\nlocalização:");
+    scanf("%s", aero[n].local);
+    fflush(stdin);
+    printf("destino:");
+    scanf(" %s", aero[n].destino);
+//    printf(" %c", aero[n].historico");
+    printf("numero voo:");
+    scanf("%d", &aero[n].numVoos);
+
+}
+
+void Eliminar_aeronaves(TipoAeronave aero[])
+{
+    int n;
+    printf("\nIndique o index da Aeronave no array:");
+    scanf("%d", &n);
+
+
+    aero[n].id=0;
+    aero[n].capacidade= 0;
+    aero[n].estado='\0';
+    aero[n].local[0]='\0';
+    aero[n].destino[0]='\0';
+    aero[n].numVoos= 0;
+}
+
+
+
+void Autorizar_voo()
+{
+    int ID;
+    printf("\nEscolheu a opcao 8");
+    printf("\n Digite o ID do Voo:");
+    scanf("%d", &ID);
+    printf("\n O voo %d foi autorizado\n",ID);
+
+    printf(" \n \n");
+    system("PAUSE");
+}
+
+void Cancelar_voo()
+{
+    int ID;
+    printf("\nEscolheu a opcao 9");
+    printf("\n Digite o ID do Voo:");
+    scanf("%d", &ID);
+    printf("\nO Voo %d foi Cancelado\n",ID);
+
+    printf(" \n \n");
+    system("PAUSE");
+}
+void Gravar_listagem_aeronaves_ficheiro_detalhe(TipoAeronave aero[])
+{
+    int i;
+
+    FILE *f;
+    f = fopen("Lista de aeronaves.txt","w");
+
+    //criar file e abrir w
+    fprintf(f,"Listar Aeronave:");
+
+    for (i = 0; i < MAX_AERONAVE; i++)
+    {
+        fprintf(f, "\nID Aeronave: .......... %d ", aero[i].id);
+        fprintf(f,"\n\tCapacidade da Aeronave: ... %d ", aero[i].capacidade);
+        fprintf(f,"\n\testado:.................... %c ", aero[i].estado);
+        // fprintf(f,\nmanifesto:................. %c ", aero[i].manifesto);
+        //for
+        fprintf(f,"\n\tlocal:................... %s", aero[i].local);
+        //fprintf(f,\nhistorico:................. %c ", aero[i].historico);
+        fprintf(f,"\n\tnumero voo:................ %d ", aero[i].numVoos);
+        fprintf(f,"\n");
+
+    }
+    fclose(f);
+}
+
+void sair()
+{
+    printf("Escolheu a opção para sair!\n");
+    system("cls");
+    exit(0);
+
+}
+
+
+int main()
+{
+    setlocale(LC_ALL,"portuguese"); // permitir utilizar carateres LP
+
+    TipoAeronave aero[10]= {};
+
+
+
+    // dados para teste
+//    aero[0].id = 1;
+//    aero[0].estado ='p';
+//    aero[0].capacidade = 4;
+//    strcpy(aero[0].local,"Tires");
+
+//    strcpy(aero[0].historico [0], "Tires");
+//    strcpy(aero[0].historico [1], "Lisboa");
+//    strcpy(aero[0].historico [2], "Lisboa");
+//
+//    aero[1].id = 1;
+//    aero[1].estado ='p';
+//    aero[1].capacidade = 4;
+//    strcpy(aero[1].local,"Lisboa");
+//    strcpy(aero[0].historico [0], "Tires");
+//    strcpy(aero[0].historico [1], "Lisboa");
+//
+//
+//    aero[2].id = 2;
+//    aero[2].estado ='p';
+//    aero[2].capacidade = 4;
+//    strcpy(aero[2].local,"Lisboa");
+//
+//    aero[3].id = 3;
+//    aero[3].estado ='a';
+//    aero[3].capacidade = 4;
+//    strcpy(aero[3].local,"Lisboa");
+//    strcpy(aero[3].destino,"Tires");
+
+
+    // fim de dados para teste
+
+    int continuar = 1;
+//    int ID;
+//    int i;
+
+
+    system("cls"); //Limpa a tela
+
+    printf("============================================\n");
+    printf(" Gestão de Frota da Transportadora Aerea IPS\n");
+    printf("============================================\n\n");
+
+
+    do
+    {
+        system("cls"); //Limpa a tela
+        menu();
+        scanf("%d%*c", &continuar);
+
+        switch (continuar)
+        {
+        case 1:
+            Listar_aeronaves_detalhes(aero);
+            break;
+
+        case 2:
+            Listar_aeronaves_estado_pronto_detalhe(aero);
+
+            break;
+
+        case 3:
+            Listar_aeronaves_aguarda_autorizacao_detalhes(aero);  // variaveis das opçoes do menu que foram criadas para a realizaçao do codigo
+
+            break;
+
+        case 4:
+            Consultar_aeronaves(aero);
+            break;
+
+        case 5:
+            Adicionar_aeronaves(aero);
+            break;
+
+        case 6:
+            Eliminar_aeronaves(aero);
+            break;
+
+        case 8:
+            Autorizar_voo();
+            break;
+
+        case 9:
+            Cancelar_voo();
+            break;
+
+        case 10:
+            Gravar_listagem_aeronaves_ficheiro_detalhe(aero);
+            break;
+
+        case 11:
+            //sair();
+            break;
+
+        default:
+            printf("Digite uma opcao valida\n");
+            printf("Tem que escolher uma opção de 1 a 11\n");  // linha de codigo para selecionar apenas as opcpes existentes
+            system("PAUSE");
+            break;
+        }
+    }
+    while (continuar!=11);
+
+    return 0;
+
+}
