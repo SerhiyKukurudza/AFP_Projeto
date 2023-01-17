@@ -1,1 +1,2 @@
-ola
+muver o cursor na consola para sitio que eu quiser - https://learn.microsoft.com/pt-pt/windows/console/coord-str
+organizar os nomes por ordem alfabetica - https://www.tutorialspoint.com/c-program-to-sort-names-in-alphabetical-order
