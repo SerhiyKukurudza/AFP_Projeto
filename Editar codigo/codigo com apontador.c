@@ -59,7 +59,7 @@ void autorizarVoo(TipoFrota *frota);                                        // 5
 void cancelarVoo(TipoFrota *frota);                                         // 6 - Cancelar voo
 void listarAeronavesOrdemDescendenteVoos(TipoFrota *frota);                 // 7 - Listar todas as aeronaves por ordem descendente de numero de voos
 void listarAeronavesEstadoPronto(TipoFrota *frota,int *verificarAirCraft, int *opcaoAirCraft, int *localAirCraft);                         // 8 - Listar aeronaves prontas (Todas ou por Local)
-void listarAeronavesEstadoAutorizacao(TipoFrota *frota);                    // 9 - Listar aeronaves a aguardar autorizacao (Todas ou por Local)
+void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft);                    // 9 - Listar aeronaves a aguardar autorizacao (Todas ou por Local)
 void consultarAeronavePorId(TipoFrota *frota);                              // 10 - Consultar aeronave inserindo o ID disponivel
 void gravarListagemAeronaves(TipoFrota *frota);                   //Parte 2 // 11 - Gravar listagem de aeronaves para ficheiro de texto
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -119,7 +119,7 @@ int main()                                                                      
             break;
         case 6:
             system("cls");
-            //cancelarVoo(&frota);
+            cancelarVoo(&frota);
             break;
         case 7:
             system("cls");
@@ -139,7 +139,15 @@ int main()                                                                      
             break;
         case 9:
             system("cls");
-            listarAeronavesEstadoAutorizacao(&frota);
+            listarAeronavesEstadoAutorizacao(&frota, &verificarAirCraft);
+
+            if(verificarAirCraft != 1)
+            {
+                gotoxy(43,52);
+                printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
+                getch();
+            }
+
             break;
         case 10:
             system("cls");
@@ -184,7 +192,7 @@ int implementacaoMenu(int opcao)                                                
         printf("5. Autorizar voo");
         gotoxy(38,15);
         seta(6,position);
-        printf("6. Cancelar voo");
+        printf(GRN"6. Cancelar voo"RESET);
         gotoxy(38,16);
         seta(7,position);
         printf("7. Listar aeronaves e detalhes (Ordem descendente de N%c de voos)"RED " " "(NF)"RESET,167);
@@ -1155,121 +1163,182 @@ void autorizarVoo(TipoFrota *f)                                         // 5 - A
     getch();
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void cancelarVoo(TipoFrota *f)                                          // 6 - Cancelar voo // falta fazer
+*/
+void cancelarVoo(TipoFrota *frota)                                // 6 - Cancelar voo // falta fazer
 {
-    int j = 12, l = 12, aeronaveEscolhida, numAeronave = 1;
-    char estadoAutorizacao[30] = {"A aguardar autorizacao"};
-    char estadoPronto[20] = {"Pronto"};
-
+    int y1, existenciaAeronaves = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0;
+    int opcao, position = 1, keyPressed;
+    char estadosAeronave[2][30] = {"Pronto","A aguardar autorizacao"};
     do
     {
-        system("cls");
-        desenharBox(80,53);
-        gotoxy(70,7);
-        printf("Cancelar voo");
-        gotoxy(40,10);
-        printf("A listar todas as aeronaves a aguardar autorizacao:");
-
-        for(int i = 0; i < aeronave[0].totalAeronaves; i++)
+        do
         {
-            if((strcmp(aeronave[i].aeronaves[i].estado, estadoAutorizacao) == 0) && (i <= 4))
+            listarAeronavesEstadoAutorizacao(frota, &existenciaAeronaves);
+
+            if(existenciaAeronaves == 1)
             {
-                gotoxy(40,j);
-                printf("---------Aeronave N%c%d---------",167,numAeronave);
-                j++;
-                gotoxy(40,j);
-                printf("ID da aeronave: %d",aeronave[i].aeronaves[i].id);
-                j++;
-                gotoxy(40,j);
-                printf("Capacidade da aeronave: %d",aeronave[i].aeronaves[i].capacidade);
-                j++;
-                gotoxy(40,j);
-                printf("Numero de voos realizados: %d",aeronave[i].aeronaves[i].numVoos);
-                j++;
-                gotoxy(40,j);
-                printf("Estado atual: %s",aeronave[i].aeronaves[i].estado);
-                j++;
-                gotoxy(40,j);
-                printf("Local atual: %s",aeronave[i].aeronaves[i].local);
-                j++;
-                gotoxy(40,j);
-                printf("Destino atual: %s",aeronave[i].aeronaves[i].destino);
-                j += 2;
-                numAeronave++;
+                return;
             }
-            else if((strcmp(aeronave[i].aeronaves[i].estado, estadoAutorizacao) == 0) && (i >= 5))
+
+            gotoxy(40,49);
+            printf("Introduza o ID da aeronave que pretende eliminar");
+            gotoxy(40,50);
+            printf("(Se nao tiver aeronaves disponiveis, introduza 0 para voltar ao menu)");
+            gotoxy(40,51);
+            printf("---> ");
+            scanf("%d",&aeronaveEscolhida);
+
+            for(int i = 0; i < 10; i++)
             {
-                gotoxy(80,l);
-                printf("---------Aeronave N%c%d---------",167,numAeronave);
-                l++;
-                gotoxy(80,l);
-                printf("ID da aeronave: %d",aeronave[i].aeronaves[i].id);
-                l++;
-                gotoxy(80,l);
-                printf("Capacidade da aeronave: %d",aeronave[i].aeronaves[i].capacidade);
-                l++;
-                gotoxy(80,l);
-                printf("Numero de voos realizados: %d",aeronave[i].aeronaves[i].numVoos);
-                l++;
-                gotoxy(80,l);
-                printf("Estado atual: %s",aeronave[i].aeronaves[i].estado);
-                l++;
-                gotoxy(80,l);
-                printf("Local atual: %s",aeronave[i].aeronaves[i].local);
-                l++;
-                gotoxy(80,l);
-                printf("Destino atual: %s",aeronave[i].aeronaves[i].destino);
-                l += 2;
-                numAeronave++;
+                if(aeronaveEscolhida == 0)
+                {
+                    return;
+                }
+                else if((aeronaveEscolhida == frota->aeronaves[i].id) && (strcmp(frota->aeronaves[i].estado,estadosAeronave[1]) == 0))
+                {
+                    posicaoAeronave = i;
+                    aeronaveEncontrada = TRUE;
+                }
+            }
+            if(aeronaveEncontrada == FALSE)
+            {
+                gotoxy(57,54);
+                printf(RED"ERRO: Voce introduziu o ID invalido,");
+                gotoxy(54,55);
+                printf("reintroduza o valor dentro dos apresentados."RESET);
+                Sleep(2000);
+                system("cls");
             }
         }
-        gotoxy(40,43);
-        printf("Introduza o numero da aeronave disponivel");
-        gotoxy(40,44);
-        printf("(Se nao tiver aeronaves disponiveis, introduza 20)");
-        gotoxy(40,45);
-        printf("---> ");
-        scanf("%d",&aeronaveEscolhida);
+        while (aeronaveEncontrada == FALSE);
 
-        if (aeronaveEscolhida == 20)
+
+        gotoxy(58,54);
+        printf(GRN"Foi escolhida a aeronave N%c%d com ID: %d"RESET,167, posicaoAeronave+1,frota->aeronaves[posicaoAeronave].id);
+        Sleep(2000);
+
+        while (keyPressed != 13)
         {
-            return;
-        }
-        else if ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves))
-        {
-            gotoxy(57,47);
-            printf("ERRO: Voce introduziu o valor invalido,");
-            gotoxy(54,48);
-            printf("reintroduza o valor dentro dos apresentados.");
-            Sleep(2000);
             system("cls");
+            desenharBox(80,50);
+            gotoxy(71,7);
+            printf("Cancelar voo");
+            gotoxy(40,9);
+            printf("A listar detalhes da aeronave com ID N%c%d:",167,posicaoAeronave+1);
+            y1 = 12;
+            gotoxy(40,y1);
+            printf("---------Aeronave N%c%d---------",167,posicaoAeronave+1);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("ID da aeronave: %d",frota->aeronaves[posicaoAeronave].id);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Capacidade da aeronave: %d",frota->aeronaves[posicaoAeronave].capacidade);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Numero de voos realizados: %d",frota->aeronaves[posicaoAeronave].numVoos);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Estado atual: %s",frota->aeronaves[posicaoAeronave].estado);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Local atual: %s",frota->aeronaves[posicaoAeronave].localAtual);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Local do destino: %s",frota->aeronaves[posicaoAeronave].destino);
+            y1 += 2;
+
+            for(int i = 0; i < frota->aeronaves[posicaoAeronave].capacidade; i++)
+            {
+                gotoxy(40, y1);
+                printf("Nome completo do N%c%d passageiro: %s",167,i+1,frota->aeronaves[posicaoAeronave].manifesto[i].nome);
+                y1 += 2;
+                gotoxy(40, y1);
+                printf("NIF do N%c%d passageiro: %ld",167,i+1,frota->aeronaves[posicaoAeronave].manifesto[i].nif);
+                y1 += 2;
+            }
+
+            desenharLinhaSeparacao(42);
+
+            gotoxy(40,44);
+            printf("Pretende mesmo cancelar o voo(Escolha a opcao pretendida):");
+            gotoxy(40,46);
+            seta(1,position);
+            printf("Sim");
+            gotoxy(40,47);
+            seta(2,position);
+            printf("Nao");
+            gotoxy(40,48);
+            seta(3,position);
+            printf("Nao - Voltar para menu principal");
+
+            keyPressed = getch();
+
+            if(keyPressed == 80 && position != 3)
+            {
+                position++;
+            }
+            else if(keyPressed == 72 && position != 1)
+            {
+                position--;
+            }
+            else
+            {
+                position = position;
+            }
+        }
+
+        opcao = position;
+
+        position = 1;
+        keyPressed = 0;
+
+        switch(opcao)
+        {
+        case 1:
+
+            system("cls");
+            desenharBox(80,36);
+            gotoxy(71,7);
+            printf("Cancelar voo");
+
+            strcpy(frota->aeronaves[posicaoAeronave].estado, estadosAeronave[0]);
+            strcpy(frota->aeronaves[posicaoAeronave].destino, "");
+
+            for(int i = 0; i < 3; i++)
+            {
+                strcpy(frota->aeronaves[posicaoAeronave].historico[i],"");
+            }
+
+            for(int i = 0; i < frota->aeronaves[posicaoAeronave].capacidade; i++)
+            {
+                frota->aeronaves[posicaoAeronave].manifesto[i].nif = 0;
+                strcpy(frota->aeronaves[posicaoAeronave].manifesto[i].nome,"");
+                strcpy(frota->aeronaves[posicaoAeronave].destino,"");
+            }
+
+            gotoxy(55,15);
+            printf("O voo foi cancelado com sucesso");
+
+            gotoxy(43,20);
+            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
+
+            getch();
+            break;
+        case 2:
+
+            break;
+        case 3:
+            return;
+            break;
+        default:
+            break;
         }
     }
-    while ((aeronaveEscolhida < 1) || (aeronaveEscolhida > aeronave[0].totalAeronaves));
-
-    aeronaveEscolhida -= 1;
-
-    gotoxy(58,47);
-    printf("Foi escolhida a aeronave N%c%d com ID: %d",167,aeronaveEscolhida + 1,aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].id);
-
-    strcpy(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].estado, estadoPronto);
-
-    for(int i = 0; i < aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].capacidade; i++)
-    {
-        aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].manifesto[i].nif = 0;
-        strcpy(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].manifesto[i].nome,"");
-        strcpy(aeronave[aeronaveEscolhida].aeronaves[aeronaveEscolhida].destino,"");
+    while(1);
     }
-
-    gotoxy(43,49);
-    printf("O voo foi cancelado com sucesso");
-
-    gotoxy(43,51);
-    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
-
-    getch();
-}
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
+/*
 void listarAeronavesOrdemDescendenteVoos(TipoFrota *f)                  // 7 - Listar todas as aeronaves por ordem descendente de numero de voos // falta fazer
 {
     desenharBox(80,36);
@@ -1514,7 +1583,7 @@ void listarAeronavesEstadoPronto(TipoFrota *frota, int *verificarAirCraft, int *
     }
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9 - Listar aeronaves a aguardar autorizacao (Todas ou por Local)
+void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft)                     // 9 - Listar aeronaves a aguardar autorizacao (Todas ou por Local)
 {
     int position = 1;
     int keyPressed = 0;
@@ -1575,6 +1644,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9
             gotoxy(43,25);
             printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
             getch();
+            *verificarAirCraft = numeroAeronave;
             return;
         }
 
@@ -1587,10 +1657,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9
 
         listaAutomaticaAeronaves(frota, &numeroAeronave, 0, 0, 1);
 
-        gotoxy(43,52);
-        printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
-
-        getch();
+        *verificarAirCraft = numeroAeronave;
         break;
 
     case 2:
@@ -1651,6 +1718,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9
                 gotoxy(43,25);
                 printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
                 getch();
+                *verificarAirCraft = numeroAeronave;
                 return;
             }
 
@@ -1665,10 +1733,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9
 
             listaAutomaticaAeronaves(frota, &numeroAeronave, 1, 0, 1);
 
-            gotoxy(43,52);
-            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
-
-            getch();
+            *verificarAirCraft = numeroAeronave;
             break;
 
         case 2:
@@ -1687,6 +1752,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9
                 gotoxy(43,25);
                 printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
                 getch();
+                *verificarAirCraft = numeroAeronave;
                 return;
             }
 
@@ -1701,10 +1767,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9
 
             listaAutomaticaAeronaves(frota, &numeroAeronave, 1, 1, 1);
 
-            gotoxy(43,52);
-            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
-
-            getch();
+            *verificarAirCraft = numeroAeronave;
             break;
         case 3:
             listaAutomaticaAeronaves(frota, &numeroAeronave, 1, 2, 1);
@@ -1722,6 +1785,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9
                 gotoxy(43,25);
                 printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
                 getch();
+                *verificarAirCraft = numeroAeronave;
                 return;
             }
 
@@ -1736,10 +1800,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota)                     // 9
 
             listaAutomaticaAeronaves(frota, &numeroAeronave, 1, 2, 1);
 
-            gotoxy(43,52);
-            printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
-
-            getch();
+            *verificarAirCraft = numeroAeronave;
             break;
         default:
             break;
