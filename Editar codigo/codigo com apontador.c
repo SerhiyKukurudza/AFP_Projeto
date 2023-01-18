@@ -713,14 +713,33 @@ void eliminarAeronaveFrota(TipoFrota *frota)                                // 2
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3 - Editar aeronave
 {
-    char estadosAeronave[3][30] = {"Pronto","A aguardar autorizacao","Fora de servico"};
+//    char estadosAeronave[3][30] = {"Pronto","A aguardar autorizacao","Fora de servico"};
+//
+//    strcpy(frota->aeronaves[2].estado,estadosAeronave[1]);
+//    strcpy(frota->aeronaves[3].estado,estadosAeronave[1]);
+//    strcpy(frota->aeronaves[4].estado,estadosAeronave[1]);
+//    strcpy(frota->aeronaves[5].estado,estadosAeronave[1]);
+//    strcpy(frota->aeronaves[6].estado,estadosAeronave[1]);
 
-    strcpy(frota->aeronaves[2].estado,estadosAeronave[1]);
-    strcpy(frota->aeronaves[3].estado,estadosAeronave[1]);
-    strcpy(frota->aeronaves[4].estado,estadosAeronave[1]);
-    strcpy(frota->aeronaves[5].estado,estadosAeronave[1]);
-    strcpy(frota->aeronaves[6].estado,estadosAeronave[1]);
+    int posicaoAeronave;
+    int destino = 1;
 
+    printf("Introduze o ID da aeronave:");
+    scanf("%d",&posicaoAeronave);
+    printf("\n\n");
+
+    posicaoAeronave -= 1;
+
+    for(int i = 2; i >= 0; i--)
+    {
+        if(frota->aeronaves[posicaoAeronave].historico[i][0] != '\0')
+        {
+            printf("Destino N%d e numeros de voos para ver se ta bom %d\n", destino, frota->aeronaves[posicaoAeronave].numVoos);
+            printf("%s\n", frota->aeronaves[posicaoAeronave].historico[i]);
+            destino++;
+        }
+    }
+    getch();
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void iniciarPedidoVoo(TipoFrota *frota)                                     // 4 - Iniciar pedido de voo
@@ -1045,6 +1064,9 @@ void iniciarPedidoVoo(TipoFrota *frota)                                     // 4
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void autorizarVoo(TipoFrota *frota)                                         // 5 - Autorizar voo // falta fazer
 {
+    char setaHistorico[] = "--->";
+    int historicoCheio = 0;
+
 
     int y1, existenciaAeronaves = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0;
     int opcao, position = 1, keyPressed;
@@ -1183,8 +1205,6 @@ void autorizarVoo(TipoFrota *frota)                                         // 5
             gotoxy(71,7);
             printf("Autorizar voo");
 
-
-
             if(frota->aeronaves[posicaoAeronave].numVoos < 99)
             {
                 frota->aeronaves[posicaoAeronave].numVoos += 1;
@@ -1196,42 +1216,37 @@ void autorizarVoo(TipoFrota *frota)                                         // 5
                 strcpy(frota->aeronaves[posicaoAeronave].estado, estadosAeronave[2]);
             }
 
+            //memoria dos ultimos tres voos
+            for(int i = 2; i >= 0; i--)
+            {
+                if(frota->aeronaves[posicaoAeronave].historico[i][0] == '\0')
+                {
+                    strcpy(frota->aeronaves[posicaoAeronave].historico[i], frota->aeronaves[posicaoAeronave].localAtual);
+                    strcat(frota->aeronaves[posicaoAeronave].historico[i], setaHistorico);
+                    strcat(frota->aeronaves[posicaoAeronave].historico[i], frota->aeronaves[posicaoAeronave].destino);
+                    historicoCheio += 1;
+                    break;
+                }
+            }
+
+            if(historicoCheio == 0)
+            {
+                strcpy(frota->aeronaves[posicaoAeronave].historico[2], frota->aeronaves[posicaoAeronave].historico[1]);
+                strcpy(frota->aeronaves[posicaoAeronave].historico[1], frota->aeronaves[posicaoAeronave].historico[0]);
+
+                strcpy(frota->aeronaves[posicaoAeronave].historico[0], frota->aeronaves[posicaoAeronave].localAtual);
+                strcat(frota->aeronaves[posicaoAeronave].historico[0], setaHistorico);
+                strcat(frota->aeronaves[posicaoAeronave].historico[0], frota->aeronaves[posicaoAeronave].destino);
+            }
+
             strcpy(frota->aeronaves[posicaoAeronave].localAtual, frota->aeronaves[posicaoAeronave].destino);
-
-
             strcpy(frota->aeronaves[posicaoAeronave].destino, "");
-
-
 
             for(int i = 0; i < frota->aeronaves[posicaoAeronave].capacidade; i++)
             {
                 frota->aeronaves[posicaoAeronave].manifesto[i].nif = 0;
                 strcpy(frota->aeronaves[posicaoAeronave].manifesto[i].nome,"");
             }
-
-            //memoria dos ultimos tres voos
-
-            char seta[] = "--->";
-            for(int i = 2; i >= 0; i--)
-            {
-                if(frota->aeronaves[posicaoAeronave].historico[i][0] == '\0')
-                {
-                    strcpy(frota->aeronaves[posicaoAeronave].historico[i], frota->aeronaves[posicaoAeronave].localAtual);
-                    strcat(frota->aeronaves[posicaoAeronave].historico[i], seta);
-                    strcat(frota->aeronaves[posicaoAeronave].historico[i], frota->aeronaves[posicaoAeronave].destino);
-
-
-                    strcpy(frota->aeronaves[posicaoAeronave].historico[i], frota->aeronaves[posicaoAeronave].localAtual, traco[0],frota->aeronaves[posicaoAeronave].destino);
-                    break;
-                }
-            }
-
-
-
-
-
-
-
 
             gotoxy(55,15);
             printf("O voo foi autorizado com sucesso");
