@@ -1,2 +1,3 @@
 muver o cursor na consola para sitio que eu quiser - https://learn.microsoft.com/pt-pt/windows/console/coord-str
 organizar os nomes por ordem alfabetica - https://www.tutorialspoint.com/c-program-to-sort-names-in-alphabetical-order
+codigos para por as cores nas palavras - https://stackoverflow.com/questions/3585846/color-text-in-terminal-applications-in-unix
