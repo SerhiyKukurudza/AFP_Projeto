@@ -122,7 +122,7 @@ int main()                                                                      
             break;
         case 7:
             system("cls");
-            //listarAeronavesOrdemDescendenteVoos(&frota);
+            listarAeronavesOrdemDescendenteVoos(&frota);
             break;
         case 8:
             system("cls");
@@ -194,7 +194,7 @@ int implementacaoMenu(int opcao)                                                
         printf(GRN"6. Cancelar voo - 100%%"RESET);
         gotoxy(38,16);
         seta(7,position);
-        printf("7. Listar aeronaves e detalhes (Ordem descendente de N%c de voos)"RED " " "(NF)"RESET,167);
+        printf(GRN"7. Listar aeronaves e detalhes (Ordem descendente de N%c de voos)"RESET,167);
         gotoxy(38,17);
         seta(8,position);
         printf(GRN"8. Listar aeronaves no estado pronto e detalhes - 100%%"RESET);
@@ -721,6 +721,10 @@ void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3
 //    strcpy(frota->aeronaves[6].estado,estadosAeronave[1]);
 
     frota->aeronaves[0].numVoos= 98;
+    frota->aeronaves[1].numVoos= 5;
+    frota->aeronaves[2].numVoos= 78;
+    frota->aeronaves[3].numVoos= 45;
+    frota->aeronaves[4].numVoos= 10;
 
     getch();
 }
@@ -1424,21 +1428,156 @@ void cancelarVoo(TipoFrota *frota)                                // 6 - Cancela
     while(1);
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-void listarAeronavesOrdemDescendenteVoos(TipoFrota *f)                  // 7 - Listar todas as aeronaves por ordem descendente de numero de voos // falta fazer
+void listarAeronavesOrdemDescendenteVoos(TipoFrota *frota)                  // 7 - Listar todas as aeronaves por ordem descendente de numero de voos // falta fazer
 {
-    desenharBox(80,36);
+    int i = 0, j = 0, indiceMaximo = 0;
+    int auxId = 0, auxCapacidade = 0, auxNumVoos = 0, auxNif = 0;
+    char auxEstado[30], auxLocalAtual[20], auxDestino[20], auxHistorico[30], auxNome[50];
+    int y1 = 12, y2 = 12, numeroAeronave = 1;
+
+    if(frota->totalAeronaves == 0)
+    {
+        system("cls");
+        desenharBox(80,36);
+        gotoxy(47,7);
+        printf("Listar aeronaves e detalhes (Ordem descendente de N%c de voos)",167);
+        gotoxy(53,14);
+        printf("De momento nao ha nenhuma aeronave para listar,");
+        gotoxy(45,16);
+        printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+        gotoxy(43,25);
+        printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
+        getch();
+        return;
+    }
+
+    system("cls");
+    desenharBox(80,58);
     gotoxy(47,7);
     printf("Listar aeronaves e detalhes (Ordem descendente de N%c de voos)",167);
-    gotoxy(45,13);
-    printf(RED"De momento esta funcionalidade encontrasse em desenvolvimento,");
-    gotoxy(67,15);
-    printf("nao esta disponivel"RESET);
-    gotoxy(43,20);
-    printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+    gotoxy(40,10);
+    printf("A listar todas as aeronaves da frota:");
+
+
+    for (i = 0; i < frota->totalAeronaves-1; i++)
+    {
+        indiceMaximo = i;
+
+        for (j = i + 1; j < frota->totalAeronaves; j++)
+        {
+            if (frota->aeronaves[j].numVoos > frota->aeronaves[indiceMaximo].numVoos) //por ordem descrescente seria '>'
+            {
+                indiceMaximo = j;
+            }
+        }
+
+        if(i != indiceMaximo)
+        {
+            // troca id's consuante numero de voos por ordem descrescente
+            auxId = frota->aeronaves[i].id;
+            frota->aeronaves[i].id = frota->aeronaves[indiceMaximo].id;
+            frota->aeronaves[indiceMaximo].id = auxId;
+
+            // troca capacidade consuante numero de voos por ordem descrescente
+            auxCapacidade = frota->aeronaves[i].capacidade;
+            frota->aeronaves[i].capacidade = frota->aeronaves[indiceMaximo].capacidade;
+            frota->aeronaves[indiceMaximo].capacidade = auxCapacidade;
+
+            // troca numero de voos por ordem descrescente
+            auxNumVoos = frota->aeronaves[i].numVoos;
+            frota->aeronaves[i].numVoos = frota->aeronaves[indiceMaximo].numVoos;
+            frota->aeronaves[indiceMaximo].numVoos = auxNumVoos;
+
+            // troca estado consuante numero de voos por ordem descrescente
+            strcpy(auxEstado,frota->aeronaves[i].estado);
+            strcpy(frota->aeronaves[i].estado,frota->aeronaves[indiceMaximo].estado);
+            strcpy(frota->aeronaves[indiceMaximo].estado,auxEstado);
+
+            // troca localAtual consuante numero de voos por ordem descrescente
+            strcpy(auxLocalAtual,frota->aeronaves[i].localAtual);
+            strcpy(frota->aeronaves[i].localAtual,frota->aeronaves[indiceMaximo].localAtual);
+            strcpy(frota->aeronaves[indiceMaximo].localAtual,auxLocalAtual);
+
+            // troca destino consuante numero de voos por ordem descrescente
+            strcpy(auxDestino,frota->aeronaves[i].destino);
+            strcpy(frota->aeronaves[i].destino,frota->aeronaves[indiceMaximo].destino);
+            strcpy(frota->aeronaves[indiceMaximo].destino,auxDestino);
+
+            // troca historico consuante numero de voos por ordem descrescente
+            for(int h = 0; h < 3; h++)
+            {
+                strcpy(auxHistorico,frota->aeronaves[i].historico[h]);
+                strcpy(frota->aeronaves[i].historico[h],frota->aeronaves[indiceMaximo].historico[h]);
+                strcpy(frota->aeronaves[indiceMaximo].historico[h],auxHistorico);
+            }
+
+            // troca passageiros consuante numero de voos por ordem descrescente
+            for(int p = 0; p < 4; p++)
+            {
+                strcpy(auxNome,frota->aeronaves[i].manifesto[p].nome);
+                strcpy(frota->aeronaves[i].manifesto[p].nome,frota->aeronaves[indiceMaximo].manifesto[p].nome);
+                strcpy(frota->aeronaves[indiceMaximo].manifesto[p].nome,auxNome);
+
+                auxNif = frota->aeronaves[i].manifesto[p].nif;
+                frota->aeronaves[i].manifesto[p].nif = frota->aeronaves[indiceMaximo].manifesto[p].nif;
+                frota->aeronaves[indiceMaximo].manifesto[p].nif = auxNif;
+            }
+        }
+    }
+
+    for(int l = 0; l < frota->totalAeronaves; l++)
+    {
+        if(l < 5)
+        {
+            gotoxy(40,y1);
+            printf("---------Aeronave N%c%d---------",167, numeroAeronave);
+            y1++;
+            gotoxy(40,y1);
+            printf("ID da aeronave: %d",frota->aeronaves[l].id);
+            y1++;
+            gotoxy(40,y1);
+            printf("Capacidade da aeronave: %d",frota->aeronaves[l].capacidade);
+            y1++;
+            gotoxy(40,y1);
+            printf("Numero de voos realizados: %d",frota->aeronaves[l].numVoos);
+            y1++;
+            gotoxy(40,y1);
+            printf("Estado atual: %s",frota->aeronaves[l].estado);
+            y1++;
+            gotoxy(40,y1);
+            printf("Local atual: %s",frota->aeronaves[l].localAtual);
+            y1 += 2;
+            numeroAeronave++;
+        }
+        else
+        {
+            gotoxy(80,y2);
+            printf("---------Aeronave N%c%d---------",167, numeroAeronave);
+            y2++;
+            gotoxy(80,y2);
+            printf("ID da aeronave: %d",frota->aeronaves[l].id);
+            y2++;
+            gotoxy(80,y2);
+            printf("Capacidade da aeronave: %d",frota->aeronaves[l].capacidade);
+            y2++;
+            gotoxy(80,y2);
+            printf("Numero de voos realizados: %d",frota->aeronaves[l].numVoos);
+            y2++;
+            gotoxy(80,y2);
+            printf("Estado atual: %s",frota->aeronaves[l].estado);
+            y2++;
+            gotoxy(80,y2);
+            printf("Local atual: %s",frota->aeronaves[l].localAtual);
+            y2 += 2;
+            numeroAeronave++;
+        }
+    }
+
+    desenharLinhaSeparacao(47);
+    gotoxy(43,52);
+    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
     getch();
 }
-*/
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void listarAeronavesEstadoPronto(TipoFrota *frota, int *verificarAirCraft, int *opcaoAirCraft, int *localAirCraft)                          // 8 - Listar aeronaves prontas (Todas ou por Local)
 {
@@ -1900,6 +2039,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft) 
 void consultarAeronavePorId(TipoFrota *frota)                               // 10 - Consultar aeronave inserindo o ID disponivel
 {
     int y1, y2, aeronaveEscolhida, posicaoAeronave, aeronaveEncontrada, position = 1, keyPressed = 0, opcao;
+    int destino = 1;
     char estadoAutorizacao[30] = {"A aguardar autorizacao"};
 
     if(frota->totalAeronaves == 0)
@@ -2091,7 +2231,6 @@ void consultarAeronavePorId(TipoFrota *frota)                               // 1
         printf("A listar historico (Ultimos 3 voos) da aeronave N%c%d:",167,posicaoAeronave+1);
 
         y1 = 14;
-        int destino = 1;
 
         for(int i = 0; i <= 2; i++)
         {
