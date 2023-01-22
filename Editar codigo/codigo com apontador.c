@@ -41,7 +41,6 @@ typedef struct
     int totalPassageiros;
     int idContador;
     int totalAeronaves;
-    int totalFrota;
     TipoAeronave aeronaves[10];
 } TipoFrota;
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -189,10 +188,10 @@ int implementacaoMenu(int opcao)                                                
         printf(GRN"4. Iniciar pedido de voo - 100%%"RESET);
         gotoxy(38,14);
         seta(5,position);
-        printf("5. Autorizar voo");
+        printf(GRN"5. Autorizar voo - 100%%"RESET);
         gotoxy(38,15);
         seta(6,position);
-        printf(GRN"6. Cancelar voo"RESET);
+        printf(GRN"6. Cancelar voo - 100%%"RESET);
         gotoxy(38,16);
         seta(7,position);
         printf("7. Listar aeronaves e detalhes (Ordem descendente de N%c de voos)"RED " " "(NF)"RESET,167);
@@ -204,7 +203,7 @@ int implementacaoMenu(int opcao)                                                
         printf(GRN"9. Listar aeronaves a aguardar autorizacao e detalhes - 100%%"RESET);
         gotoxy(38,19);
         seta(10,position);
-        printf(GRN"10. Consultar aeronave especifica mostrando respetivos detalhes"RESET" "RED"Falta historico"RESET);
+        printf(GRN"10. Consultar aeronave especifica mostrando respetivos detalhes - 100%%"RESET);
         gotoxy(38,20);
         seta(11,position);
         printf(RED"11. Gravar listagem de aeronaves para ficheiro de texto (Parte 2)"RESET);
@@ -721,24 +720,8 @@ void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3
 //    strcpy(frota->aeronaves[5].estado,estadosAeronave[1]);
 //    strcpy(frota->aeronaves[6].estado,estadosAeronave[1]);
 
-    int posicaoAeronave;
-    int destino = 1;
+    frota->aeronaves[0].numVoos= 98;
 
-    printf("Introduze o ID da aeronave:");
-    scanf("%d",&posicaoAeronave);
-    printf("\n\n");
-
-    posicaoAeronave -= 1;
-
-    for(int i = 2; i >= 0; i--)
-    {
-        if(frota->aeronaves[posicaoAeronave].historico[i][0] != '\0')
-        {
-            printf("Destino N%d e numeros de voos para ver se ta bom %d\n", destino, frota->aeronaves[posicaoAeronave].numVoos);
-            printf("%s\n", frota->aeronaves[posicaoAeronave].historico[i]);
-            destino++;
-        }
-    }
     getch();
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1066,8 +1049,6 @@ void autorizarVoo(TipoFrota *frota)                                         // 5
 {
     char setaHistorico[] = "--->";
     int historicoCheio = 0;
-
-
     int y1, existenciaAeronaves = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0;
     int opcao, position = 1, keyPressed;
     char estadosAeronave[3][30] = {"Pronto","A aguardar autorizacao","Fora de servico"};
@@ -1255,9 +1236,9 @@ void autorizarVoo(TipoFrota *frota)                                         // 5
             printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
             getch();
+            return;
             break;
         case 2:
-
             break;
         case 3:
             return;
@@ -1429,9 +1410,9 @@ void cancelarVoo(TipoFrota *frota)                                // 6 - Cancela
             printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
 
             getch();
+            return;
             break;
         case 2:
-
             break;
         case 3:
             return;
@@ -1918,11 +1899,24 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft) 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void consultarAeronavePorId(TipoFrota *frota)                               // 10 - Consultar aeronave inserindo o ID disponivel
 {
-    int y1, y2, aeronaveEscolhida, posicaoAeronave, aeronaveEncontrada;
+    int y1, y2, aeronaveEscolhida, posicaoAeronave, aeronaveEncontrada, position = 1, keyPressed = 0, opcao;
     char estadoAutorizacao[30] = {"A aguardar autorizacao"};
 
-    //listaAutomaticaAeronaves(frota, &numeroAeronave, 0, 0, 2);
-
+    if(frota->totalAeronaves == 0)
+    {
+        system("cls");
+        desenharBox(80,36);
+        gotoxy(43,7);
+        printf("Consultar aeronave especifica mostrando respetivos detalhes por ID");
+        gotoxy(53,14);
+        printf("De momento nao ha nenhuma aeronave para listar,");
+        gotoxy(45,16);
+        printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+        gotoxy(43,25);
+        printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
+        getch();
+        return;
+    }
 
     do
     {
@@ -2004,58 +1998,134 @@ void consultarAeronavePorId(TipoFrota *frota)                               // 1
     }
     while (aeronaveEncontrada == FALSE);
 
-    system("cls");
-    desenharBox(80,50);
-    gotoxy(43,7);
-    printf("Consultar aeronave especifica mostrando respetivos detalhes por ID");
-    gotoxy(40,9);
-    printf("A listar detalhes da aeronave N%c%d:",167,posicaoAeronave+1);
-    y1 = 12;
-    for(int i = 0; i < 1; i++)
+    while (keyPressed != 13)
     {
-        gotoxy(40,y1);
-        printf("---------Aeronave N%c%d---------",167,posicaoAeronave+1);
-        y1 += 2;
-        gotoxy(40,y1);
-        printf("ID da aeronave: %d",frota->aeronaves[posicaoAeronave].id);
-        y1 += 2;
-        gotoxy(40,y1);
-        printf("Capacidade da aeronave: %d",frota->aeronaves[posicaoAeronave].capacidade);
-        y1 += 2;
-        gotoxy(40,y1);
-        printf("Numero de voos realizados: %d",frota->aeronaves[posicaoAeronave].numVoos);
-        y1 += 2;
-        gotoxy(40,y1);
-        printf("Estado atual: %s",frota->aeronaves[posicaoAeronave].estado);
-        y1 += 2;
-        gotoxy(40,y1);
-        printf("Local atual: %s",frota->aeronaves[posicaoAeronave].localAtual);
-        y1 += 2;
+        system("cls");
+        desenharBox(80,50);
+        gotoxy(40,44);
+        printf("Pretende visualizar o historico da aeronave escolhida");
+        gotoxy(40,45);
+        printf("(Escolha a opcao pretendida):");
+        gotoxy(40,47);
+        seta(1,position);
+        printf("Sim");
+        gotoxy(40,48);
+        seta(2,position);
+        printf("Nao");
 
-        if(strcmp(frota->aeronaves[posicaoAeronave].estado, estadoAutorizacao) == 0)
+        gotoxy(43,7);
+        printf("Consultar aeronave especifica mostrando respetivos detalhes por ID");
+        gotoxy(40,9);
+        printf("A listar detalhes da aeronave N%c%d:",167,posicaoAeronave+1);
+        y1 = 12;
+        for(int i = 0; i < 1; i++)
         {
             gotoxy(40,y1);
-            printf("Local do destino: %s",frota->aeronaves[posicaoAeronave].destino);
+            printf("---------Aeronave N%c%d---------",167,posicaoAeronave+1);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("ID da aeronave: %d",frota->aeronaves[posicaoAeronave].id);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Capacidade da aeronave: %d",frota->aeronaves[posicaoAeronave].capacidade);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Numero de voos realizados: %d",frota->aeronaves[posicaoAeronave].numVoos);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Estado atual: %s",frota->aeronaves[posicaoAeronave].estado);
+            y1 += 2;
+            gotoxy(40,y1);
+            printf("Local atual: %s",frota->aeronaves[posicaoAeronave].localAtual);
             y1 += 2;
 
-            for(int i = 0; i < frota->aeronaves[posicaoAeronave].capacidade; i++)
+            if(strcmp(frota->aeronaves[posicaoAeronave].estado, estadoAutorizacao) == 0)
             {
-                gotoxy(40, y1);
-                printf("Nome completo do N%c%d passageiro: %s",167,i+1,frota->aeronaves[posicaoAeronave].manifesto[i].nome);
+                gotoxy(40,y1);
+                printf("Local do destino: %s",frota->aeronaves[posicaoAeronave].destino);
                 y1 += 2;
-                gotoxy(40, y1);
-                printf("NIF do N%c%d passageiro: %ld",167,i+1,frota->aeronaves[posicaoAeronave].manifesto[i].nif);
-                y1 += 2;
+
+                for(int i = 0; i < frota->aeronaves[posicaoAeronave].capacidade; i++)
+                {
+                    gotoxy(40, y1);
+                    printf("Nome completo do N%c%d passageiro: %s",167,i+1,frota->aeronaves[posicaoAeronave].manifesto[i].nome);
+                    y1 += 2;
+                    gotoxy(40, y1);
+                    printf("NIF do N%c%d passageiro: %ld",167,i+1,frota->aeronaves[posicaoAeronave].manifesto[i].nif);
+                    y1 += 2;
+                }
             }
+        }
+
+        desenharLinhaSeparacao(42);
+
+        keyPressed = getch();
+
+        if(keyPressed == 80 && position != 2)
+        {
+            position++;
+        }
+        else if(keyPressed == 72 && position != 1)
+        {
+            position--;
+        }
+        else
+        {
+            position = position;
         }
     }
 
-    desenharLinhaSeparacao(42);
+    opcao = position;
 
-    gotoxy(43,46);
-    printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
+    position = 1;
+    keyPressed = 0;
 
-    getch();
+    switch(opcao)
+    {
+    case 1:
+        system("cls");
+        desenharBox(80,36);
+        gotoxy(43,7);
+        printf("Consultar aeronave especifica mostrando respetivos detalhes por ID");
+        gotoxy(40,11);
+        printf("A listar historico (Ultimos 3 voos) da aeronave N%c%d:",167,posicaoAeronave+1);
+
+        y1 = 14;
+        int destino = 1;
+
+        for(int i = 0; i <= 2; i++)
+        {
+            if(frota->aeronaves[posicaoAeronave].historico[i][0] != '\0')
+            {
+                gotoxy(40,y1);
+                printf("Destino N%c%d da aeronave: %s",167, destino, frota->aeronaves[posicaoAeronave].historico[i]);
+                y1 += 2;
+                destino += 1;
+            }
+        }
+        if(frota->aeronaves[posicaoAeronave].numVoos == 0)
+        {
+            system("cls");
+            desenharBox(80,36);
+            gotoxy(43,7);
+            printf("Consultar aeronave especifica mostrando respetivos detalhes por ID");
+            gotoxy(39,15);
+            printf("De momento a aeronave que escolheu nao tem registado nenhum voo realizado,");
+            gotoxy(58,17);
+            printf("ou seja, historico esta indisponivel");
+
+        }
+
+        gotoxy(43,28);
+        printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
+        getch();
+        break;
+    case 2:
+        return;
+        break;
+    default:
+        break;
+    }
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
@@ -2137,10 +2207,36 @@ int desenharBox(int x, int y)                                                   
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void aprecentacaoInicial()                                                      // Subprograma que apresenta capa do projeto
 {
+    gotoxy(70,6);
+    printf(R"EOF(
+                                                                       ___
+                                                                       \\ \
+                                                                        \\ `\
+                                                     ___                 \\  \
+                                                    |    \                \\  `\
+                                                    |_____\                \    \
+                                                    |______\                \    `\
+                                                    |       \                \     \
+                                                    |      __\__---------------------------------._.
+                                                  __|---~~~__o_o_o_o_o_o_o_o_o_o_o_o_o_o_o_o_o_o_[][\__
+                                                 |___                         /~      )                \__
+                                                     ~~~---..._______________/      ,/_________________/
+                                                                            /      /
+                                                                           /     ,/
+                                                                          /     /
+                                                                         /    ,/
+                                                                        /    /
+                                                                       //  ,/
+                                                                      //  /
+                                                                     // ,/
+                                                                    //_/
+)EOF");
+
+
     desenharBox(80,36);
-    gotoxy(53,10);
+    gotoxy(53,30);
     puts("Bem vindo ao TAIPS - Transportadora Aerea IPS");
-    gotoxy(50,30);
+    gotoxy(50,33);
     puts("Projeto realizado por: Serhiy Kukurudza e Bruno Rosa");
     Sleep(1000);
     system("cls");
