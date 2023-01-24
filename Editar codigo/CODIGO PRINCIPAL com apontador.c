@@ -63,13 +63,13 @@ void listarAeronavesEstadoPronto(TipoFrota *frota,int *verificarAirCraft, int *o
 void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft);                                        // 9 - Listar aeronaves a aguardar autorizacao (Todas ou por Local)
 void consultarAeronavePorId(TipoFrota *frota, char estadosAeronave[][30]);                                              // 10 - Consultar aeronave inserindo o ID disponivel
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-int main()                                                                      // Main do projeto
+int main()                                                                                                              // Main do projeto
 {
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    SMALL_RECT windowSize = {0, 0, 150, 50};    //{L, T, R(X), B(Y)}            // Predefinicao do tamanho da janela do terminal
+    SMALL_RECT windowSize = {0, 0, 150, 50};    //{L, T, R(X), B(Y)}                                                    // Predefinicao do tamanho da janela do terminal
     SetConsoleWindowInfo(GetStdHandle(STD_OUTPUT_HANDLE), TRUE, &windowSize);
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    HANDLE hStdOut = NULL;                                                      // Predefinicao da funcao para esconder o cursor
+    HANDLE hStdOut = NULL;                                                                                              // Predefinicao da funcao para esconder o cursor
     CONSOLE_CURSOR_INFO curInfo;
     hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
     GetConsoleCursorInfo(hStdOut, &curInfo);
