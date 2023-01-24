@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1673209001 source:c:\users\sergi\desktop\projeto afp\projeto v0.2\projeto v0.2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<locale.h>
+	<string.h>
+	<ctype.h>
+	<windows.h>
+
+1674575136 source:c:\users\sergi\desktop\projeto afp main\projeto v0.2\projeto v0.2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<locale.h>
+	<string.h>
+	<ctype.h>
+	<windows.h>
+
