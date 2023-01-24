@@ -162,7 +162,7 @@ int main()                                                                      
             gotoxy(53,13);
             printf("Dados das aeronaves foram guardadas com sucesso");
             gotoxy(43,20);
-            printf("Precione qual quer tecla do teclado para voltar ao menu principal");
+            printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
             getch();
 
             file = fopen("Aeronaves.bin", "wb");
@@ -231,7 +231,7 @@ int implementacaoMenu(int opcao)                                                
         gotoxy(50,25);
         printf("Pressione tecla \"ESC\" duas vezes para sair do sistema");
         gotoxy(57,28);
-        printf("Nota: Ao precionar tecla \"ESC\" uma vez");
+        printf("Nota: Ao pressionar tecla \"ESC\" uma vez");
         gotoxy(52,29);
         printf("tambem grava listagem de aeronaves para ficheiro");
 
@@ -642,7 +642,7 @@ void eliminarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30])        
                 gotoxy(46,14);
                 printf("De momento nao ha aeronaves \"Fora de servico\" para eliminar,");
                 gotoxy(45,16);
-                printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+                printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -744,7 +744,7 @@ void editarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char loca
         gotoxy(69,7);
         printf("Editar aeronave");
         gotoxy(41,10);
-        printf("Atraves da seguinte separador apenas e possivel editar a capacidade da");
+        printf("Atraves do seguinte separador apenas e possivel editar a capacidade da");
         gotoxy(39,12);
         printf("aeronave, respeitando os limites e modificar o numero de voos efetuados se");
         gotoxy(58,14);
@@ -809,7 +809,7 @@ void editarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char loca
                 gotoxy(50,14);
                 printf("De momento nao ha aeronaves \"Prontas\" para listar,");
                 gotoxy(45,16);
-                printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+                printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -996,7 +996,7 @@ void editarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char loca
                 gotoxy(44,14);
                 printf("De momento nao ha aeronaves \"A Aguardar Autorizacao\" para listar,");
                 gotoxy(49,16);
-                printf("pode iniciar voo atravez da opcao \"4\" no menu principal");
+                printf("pode iniciar voo atraves da opcao \"4\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -1389,7 +1389,7 @@ void editarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char loca
                 gotoxy(47,16);
                 printf("porque a aeronave ja chegou ao seu limite minimo inicial,");
                 gotoxy(39,18);
-                printf("pode editar ou adicionar passageiros atravez da opcao \"3\" no menu principal");
+                printf("pode editar ou adicionar passageiros atraves da opcao \"3\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -2070,7 +2070,7 @@ void autorizarVoo(TipoFrota *frota, char estadosAeronave[][30])                 
             }
 
             gotoxy(40,49);
-            printf("Introduza o ID da aeronave para a autorizacao");
+            printf("Introduza o ID da aeronave para autorizacao");
             gotoxy(40,50);
             printf("(Se nao tiver aeronaves disponiveis, introduza 0 para voltar ao menu)");
             gotoxy(40,51);
@@ -2448,7 +2448,7 @@ void listarAeronavesOrdemDescendenteVoos(TipoFrota *frota)                      
         gotoxy(53,14);
         printf("De momento nao ha nenhuma aeronave para listar,");
         gotoxy(45,16);
-        printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+        printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
         gotoxy(43,25);
         printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
         getch();
@@ -2640,7 +2640,7 @@ void listarAeronavesEstadoPronto(TipoFrota *frota, int *verificarAirCraft, int *
             gotoxy(50,14);
             printf("De momento nao ha aeronaves \"Prontas\" para listar,");
             gotoxy(45,16);
-            printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+            printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
             gotoxy(43,25);
             printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
             getch();
@@ -2714,7 +2714,7 @@ void listarAeronavesEstadoPronto(TipoFrota *frota, int *verificarAirCraft, int *
                 gotoxy(44,14);
                 printf("De momento nao ha aeronaves \"Prontas\" em \"Vila Real\" para listar,");
                 gotoxy(45,16);
-                printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+                printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -2747,7 +2747,7 @@ void listarAeronavesEstadoPronto(TipoFrota *frota, int *verificarAirCraft, int *
                 gotoxy(46,14);
                 printf("De momento nao ha aeronaves \"Prontas\" em \"Tires\" para listar,");
                 gotoxy(45,16);
-                printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+                printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -2780,7 +2780,7 @@ void listarAeronavesEstadoPronto(TipoFrota *frota, int *verificarAirCraft, int *
                 gotoxy(44,14);
                 printf("De momento nao ha aeronaves \"Prontas\" em \"Portimao\" para listar,");
                 gotoxy(45,16);
-                printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+                printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -2869,7 +2869,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft) 
             gotoxy(44,14);
             printf("De momento nao ha aeronaves \"A Aguardar Autorizacao\" para listar,");
             gotoxy(49,16);
-            printf("pode iniciar voo atravez da opcao \"4\" no menu principal");
+            printf("pode iniciar voo atraves da opcao \"4\" no menu principal");
             gotoxy(43,25);
             printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
             getch();
@@ -2897,7 +2897,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft) 
             gotoxy(52,7);
             printf("Listar aeronaves a aguardar autorizacao e detalhes");
             gotoxy(40,10);
-            printf("Selecione a localizacao pretendida da lista a baixo:");
+            printf("Selecione a localizacao pretendida da lista abaixo:");
             gotoxy(40,12);
             seta(1,position);
             printf("Vila Real");
@@ -2943,7 +2943,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft) 
                 gotoxy(42,14);
                 printf("De momento nao ha aeronaves \"A Aguardar Autorizacao\" em \"Vila Real\"");
                 gotoxy(47,16);
-                printf("pode iniciar voo atravez da opcao \"4\" no menu principal");
+                printf("pode iniciar voo atraves da opcao \"4\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -2977,7 +2977,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft) 
                 gotoxy(44,14);
                 printf("De momento nao ha aeronaves \"A Aguardar Autorizacao\" em \"Tires\"");
                 gotoxy(48,16);
-                printf("pode iniciar voo atravez da opcao \"4\" no menu principal");
+                printf("pode iniciar voo atraves da opcao \"4\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -3010,7 +3010,7 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft) 
                 gotoxy(43,14);
                 printf("De momento nao ha aeronaves \"A Aguardar Autorizacao\" em \"Portimao\"");
                 gotoxy(48,16);
-                printf("pode iniciar voo atravez da opcao \"4\" no menu principal");
+                printf("pode iniciar voo atraves da opcao \"4\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -3053,7 +3053,7 @@ void consultarAeronavePorId(TipoFrota *frota, char estadosAeronave[][30])       
         gotoxy(53,14);
         printf("De momento nao ha nenhuma aeronave para listar,");
         gotoxy(45,16);
-        printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+        printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
         gotoxy(43,25);
         printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
         getch();
