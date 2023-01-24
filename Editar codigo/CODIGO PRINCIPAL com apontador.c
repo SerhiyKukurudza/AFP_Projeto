@@ -51,16 +51,15 @@ void seta(int realPosition, int arrowPosition);                                 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 int implementacaoMenu(int opcao);                                                                                        // Menu principal
 void adicionarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char locaisAeronave[][20]);                            // 1 - Adicionar aeronave a frota
-void eliminarAeronaveFrota(TipoFrota *frota);                               // 2 - Eliminar aeronave da frota
-void editarAeronaveFrota(TipoFrota *frota);                       //Parte2  // 3 - Editar aeronave
-void iniciarPedidoVoo(TipoFrota *frota);                                    // 4 - Iniciar pedido de voo
-void autorizarVoo(TipoFrota *frota);                                        // 5 - Autorizar voo
-void cancelarVoo(TipoFrota *frota);                                         // 6 - Cancelar voo
+void eliminarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30]);                               // 2 - Eliminar aeronave da frota
+void editarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char locaisAeronave[][20]);                       //Parte2  // 3 - Editar aeronave
+void iniciarPedidoVoo(TipoFrota *frota, char estadosAeronave[][30], char locaisAeronave[][20]);                                    // 4 - Iniciar pedido de voo
+void autorizarVoo(TipoFrota *frota, char estadosAeronave[][30]);                                        // 5 - Autorizar voo
+void cancelarVoo(TipoFrota *frota, char estadosAeronave[][30]);                                         // 6 - Cancelar voo
 void listarAeronavesOrdemDescendenteVoos(TipoFrota *frota);                 // 7 - Listar todas as aeronaves por ordem descendente de numero de voos
 void listarAeronavesEstadoPronto(TipoFrota *frota,int *verificarAirCraft, int *opcaoAirCraft, int *localAirCraft);                         // 8 - Listar aeronaves prontas (Todas ou por Local)
 void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft);                    // 9 - Listar aeronaves a aguardar autorizacao (Todas ou por Local)
-void consultarAeronavePorId(TipoFrota *frota);                              // 10 - Consultar aeronave inserindo o ID disponivel
-void gravarListagemAeronaves(TipoFrota *frota);                   //Parte 2 // 11 - Gravar listagem de aeronaves para ficheiro de texto
+void consultarAeronavePorId(TipoFrota *frota, char estadosAeronave[][30]);                              // 10 - Consultar aeronave inserindo o ID disponivel
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void listaAutomaticaAeronaves(TipoFrota *frota, int *aeronave, int opcao, int local, int estado);
 void desenharLinhaSeparacao(int y);
@@ -87,17 +86,12 @@ int main()                                                                      
     //    setlocale(LC_CTYPE, "Portuguese");
     //    system("color 0A");
 
-
     FILE *file;
     TipoFrota frota = {};
 
-
     file = fopen("Aeronaves.bin", "rb");
-
     fread(&frota, sizeof(TipoFrota), 1, file);
-
     fclose(file);
-
 
     aprecentacaoInicial();
 
@@ -113,23 +107,23 @@ int main()                                                                      
             break;
         case 2:
             system("cls");
-            eliminarAeronaveFrota(&frota);
+            eliminarAeronaveFrota(&frota, estadosAeronave);
             break;
         case 3:
             system("cls");
-            editarAeronaveFrota(&frota);
+            editarAeronaveFrota(&frota, estadosAeronave, locaisAeronave);
             break;
         case 4:
             system("cls");
-            iniciarPedidoVoo(&frota);
+            iniciarPedidoVoo(&frota, estadosAeronave, locaisAeronave);
             break;
         case 5:
             system("cls");
-            autorizarVoo(&frota);
+            autorizarVoo(&frota, estadosAeronave);
             break;
         case 6:
             system("cls");
-            cancelarVoo(&frota);
+            cancelarVoo(&frota, estadosAeronave);
             break;
         case 7:
             system("cls");
@@ -145,7 +139,6 @@ int main()                                                                      
                 printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
                 getch();
             }
-
             break;
         case 9:
             system("cls");
@@ -157,17 +150,13 @@ int main()                                                                      
                 printf("Pressione qual quer tecla do teclado para voltar ao menu principal");
                 getch();
             }
-
             break;
         case 10:
             system("cls");
-            consultarAeronavePorId(&frota);
+            consultarAeronavePorId(&frota, estadosAeronave);
             break;
         case 11:
             system("cls");
-
-            //gravarListagemAeronaves(&frota);
-
             desenharBox(80,36);
             gotoxy(52,7);
             printf("Gravar listagem de aeronaves para ficheiro de texto");
@@ -175,15 +164,17 @@ int main()                                                                      
             printf("Dados das aeronaves foram guardadas com sucesso");
             gotoxy(43,20);
             printf("Precione qual quer tecla do teclado para voltar ao menu principal");
-
             getch();
 
             file = fopen("Aeronaves.bin", "wb");
-
             fwrite(&frota, sizeof(TipoFrota), 1, file);
-
             fclose(file);
-
+            break;
+        case 12:
+            file = fopen("Aeronaves.bin", "wb");
+            fwrite(&frota, sizeof(TipoFrota), 1, file);
+            fclose(file);
+            return 0;
             break;
         default:
             return 0;
@@ -194,6 +185,7 @@ int main()                                                                      
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 int implementacaoMenu(int opcao)                                                // Menu principal
 {
+
     int position = 1;
     int keyPressed = 0;
 
@@ -256,6 +248,8 @@ int implementacaoMenu(int opcao)                                                
             printf(RED"Voce escolheu opcao sair do sistema"RESET);
             position = 0;
             gotoxy(0,40);
+            opcao = 12;
+            return opcao;
             break;
         }
         else
@@ -271,9 +265,7 @@ int implementacaoMenu(int opcao)                                                
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void adicionarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char locaisAeronave[][20])                               // 1 - Adicionar aeronave a frota
 {
-    int posicaoAeronave = 0, opcaoLocalizacao = 0;
-    int position = 1;
-    int keyPressed = 0;
+    int posicaoAeronave = 0, opcaoLocal = 0, keyPressed = 0, position = 1;
 
     if(frota->totalAeronaves < 10)
     {
@@ -381,12 +373,12 @@ void adicionarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char l
         }
     }
 
-    opcaoLocalizacao = position;
+    opcaoLocal = position;
 
     position = 1;
     keyPressed = 0;
 
-    switch(opcaoLocalizacao)
+    switch(opcaoLocal)
     {
     case 1:
         strcpy(frota->aeronaves[posicaoAeronave].localAtual, locaisAeronave[0]);
@@ -418,6 +410,7 @@ void listaAutomaticaAeronaves(TipoFrota *frota, int *aeronave, int opcao, int lo
     int j = 12, l = 12;
     char estadosAeronave[3][30] = {"Pronto","A aguardar autorizacao","Fora de servico"};
     char locaisAeronave[3][20] = {"Vila Real","Tires","Portimao"};
+
     *aeronave = 1;
 
     if(opcao == 0)
@@ -523,13 +516,9 @@ void listaAutomaticaAeronaves(TipoFrota *frota, int *aeronave, int opcao, int lo
     desenharLinhaSeparacao(47);
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void eliminarAeronaveFrota(TipoFrota *frota)                                // 2 - Eliminar aeronave da frota // falta fazer
+void eliminarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30])                                // 2 - Eliminar aeronave da frota // falta fazer
 {
-    int aeronaveEscolhida = 0, aeronaveEncontrada = 0, posicaoAeronave = 0, numeroAeronave;
-    int position = 1;
-    int keyPressed = 0;
-    int opcao;
-    char estadosAeronave[2][30] = {"Pronto","Fora de servico"};
+    int opcao = 0, aeronaveEscolhida = 0, aeronaveEncontrada = 0, posicaoAeronave = 0, numeroAeronave = 0, keyPressed = 0, position = 1;
 
     while (keyPressed != 13)
     {
@@ -680,7 +669,7 @@ void eliminarAeronaveFrota(TipoFrota *frota)                                // 2
                 {
                     return;
                 }
-                else if((aeronaveEscolhida == frota->aeronaves[i].id) && (strcmp(frota->aeronaves[i].estado,estadosAeronave[1]) == 0))
+                else if((aeronaveEscolhida == frota->aeronaves[i].id) && (strcmp(frota->aeronaves[i].estado,estadosAeronave[2]) == 0))
                 {
                     posicaoAeronave = i;
                     aeronaveEncontrada = TRUE;
@@ -739,14 +728,9 @@ void eliminarAeronaveFrota(TipoFrota *frota)                                // 2
     getch();
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3 - Editar aeronave
+void editarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char locaisAeronave[][20])                        //Parte2  // 3 - Editar aeronave
 {
-    int position = 1;
-    int keyPressed = 0;
-    int opcao;
-    int niu, aeronaveEscolhida, posicaoAeronave, aeronaveEncontrada;
-    char estadosAeronave[3][30] = {"Pronto","A aguardar autorizacao","Fora de servico"};
-    char localizacaoTemp[3][20] = {"Vila Real","Tires","Portimao"};
+    int niu = 0, opcao = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0, keyPressed = 0, position = 1;
 
     while (keyPressed != 13)
     {
@@ -1133,7 +1117,7 @@ void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3
             break;
 
         case 4:
-            if(strcmp(frota->aeronaves[posicaoAeronave].localAtual, localizacaoTemp[0]) == 0)
+            if(strcmp(frota->aeronaves[posicaoAeronave].localAtual, locaisAeronave[0]) == 0)
             {
                 while (keyPressed != 13)
                 {
@@ -1174,17 +1158,17 @@ void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3
                 switch(opcao)
                 {
                 case 1:
-                    strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[1]);
+                    strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[1]);
                     break;
                 case 2:
-                    strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[2]);
+                    strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[2]);
                     break;
                 default:
                     break;
                 }
             }
 
-            else if(strcmp(frota->aeronaves[posicaoAeronave].localAtual, localizacaoTemp[1]) == 0)
+            else if(strcmp(frota->aeronaves[posicaoAeronave].localAtual, locaisAeronave[1]) == 0)
             {
                 while (keyPressed != 13)
                 {
@@ -1225,10 +1209,10 @@ void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3
                 switch(opcao)
                 {
                 case 1:
-                    strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[0]);
+                    strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[0]);
                     break;
                 case 2:
-                    strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[2]);
+                    strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[2]);
                     break;
                 default:
                     break;
@@ -1276,10 +1260,10 @@ void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3
                 switch(opcao)
                 {
                 case 1:
-                    strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[0]);
+                    strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[0]);
                     break;
                 case 2:
-                    strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[1]);
+                    strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[1]);
                     break;
                 default:
                     break;
@@ -1299,18 +1283,11 @@ void editarAeronaveFrota(TipoFrota *frota)                        //Parte2  // 3
     getch();
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void iniciarPedidoVoo(TipoFrota *frota)                                     // 4 - Iniciar pedido de voo
+void iniciarPedidoVoo(TipoFrota *frota, char estadosAeronave[][30], char locaisAeronave[][20])                                     // 4 - Iniciar pedido de voo
 {
-    int position = 1;
-    int keyPressed = 0;
-    int posicaoAeronave, aeronaveEncontrada;
-    int opcaoDestino, y1, y2, aeronaveEscolhida;
+    int opcaoDestino = 0, y1 = 0, y2 = 0, aeronaveEscolhida = 0, existenciaAeronaves = 0, opcaoAirCraft = 0, localAirCraft = 0, posicaoAeronave = 0, aeronaveEncontrada = 0, keyPressed = 0, position = 1;
     char strOrdenarNomes[50];
-    long int ordenarNifs;
-    char estadosAeronave[2][30] = {"Pronto","A aguardar autorizacao"};
-    char localizacaoTemp[3][20] = {"Vila Real","Tires","Portimao"};
-    int existenciaAeronaves = 0;
-    int opcaoAirCraft, localAirCraft;
+    long int ordenarNifs = 0;
 
     do
     {
@@ -1361,7 +1338,7 @@ void iniciarPedidoVoo(TipoFrota *frota)                                     // 4
                 {
                     return;
                 }
-                else if((aeronaveEscolhida == frota->aeronaves[i].id) && (strcmp(frota->aeronaves[i].estado,estadosAeronave[0]) == 0) && (strcmp(frota->aeronaves[i].localAtual,localizacaoTemp[localAirCraft]) == 0))
+                else if((aeronaveEscolhida == frota->aeronaves[i].id) && (strcmp(frota->aeronaves[i].estado,estadosAeronave[0]) == 0) && (strcmp(frota->aeronaves[i].localAtual,locaisAeronave[localAirCraft]) == 0))
                 {
                     posicaoAeronave = i;
                     aeronaveEncontrada = TRUE;
@@ -1457,7 +1434,7 @@ void iniciarPedidoVoo(TipoFrota *frota)                                     // 4
     }
 
     //atribuicao do destino da aeronave
-    if(strcmp(frota->aeronaves[posicaoAeronave].localAtual, localizacaoTemp[0]) == 0)
+    if(strcmp(frota->aeronaves[posicaoAeronave].localAtual, locaisAeronave[0]) == 0)
     {
         while (keyPressed != 13)
         {
@@ -1498,17 +1475,17 @@ void iniciarPedidoVoo(TipoFrota *frota)                                     // 4
         switch(opcaoDestino)
         {
         case 1:
-            strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[1]);
+            strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[1]);
             break;
         case 2:
-            strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[2]);
+            strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[2]);
             break;
         default:
             break;
         }
     }
 
-    else if(strcmp(frota->aeronaves[posicaoAeronave].localAtual, localizacaoTemp[1]) == 0)
+    else if(strcmp(frota->aeronaves[posicaoAeronave].localAtual, locaisAeronave[1]) == 0)
     {
         while (keyPressed != 13)
         {
@@ -1549,10 +1526,10 @@ void iniciarPedidoVoo(TipoFrota *frota)                                     // 4
         switch(opcaoDestino)
         {
         case 1:
-            strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[0]);
+            strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[0]);
             break;
         case 2:
-            strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[2]);
+            strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[2]);
             break;
         default:
             break;
@@ -1600,10 +1577,10 @@ void iniciarPedidoVoo(TipoFrota *frota)                                     // 4
         switch(opcaoDestino)
         {
         case 1:
-            strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[0]);
+            strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[0]);
             break;
         case 2:
-            strcpy(frota->aeronaves[posicaoAeronave].destino, localizacaoTemp[1]);
+            strcpy(frota->aeronaves[posicaoAeronave].destino, locaisAeronave[1]);
             break;
         default:
             break;
@@ -1619,13 +1596,10 @@ void iniciarPedidoVoo(TipoFrota *frota)                                     // 4
     getch();
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void autorizarVoo(TipoFrota *frota)                                         // 5 - Autorizar voo // falta fazer
+void autorizarVoo(TipoFrota *frota, char estadosAeronave[][30])                                         // 5 - Autorizar voo // falta fazer
 {
     char setaHistorico[] = "--->";
-    int historicoCheio = 0;
-    int y1, existenciaAeronaves = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0;
-    int opcao, position = 1, keyPressed;
-    char estadosAeronave[3][30] = {"Pronto","A aguardar autorizacao","Fora de servico"};
+    int y1 = 0, existenciaAeronaves = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0, opcao = 0, keyPressed = 0, historicoCheio = 0, position = 1;
 
     do
     {
@@ -1824,11 +1798,10 @@ void autorizarVoo(TipoFrota *frota)                                         // 5
     while(1);
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void cancelarVoo(TipoFrota *frota)                                // 6 - Cancelar voo // falta fazer
+void cancelarVoo(TipoFrota *frota, char estadosAeronave[][30])                                // 6 - Cancelar voo // falta fazer
 {
-    int y1, existenciaAeronaves = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0;
-    int opcao, position = 1, keyPressed;
-    char estadosAeronave[2][30] = {"Pronto","A aguardar autorizacao"};
+    int y1 = 0, existenciaAeronaves = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0, opcao = 0, keyPressed = 0, position = 1;
+
     do
     {
         do
@@ -2606,11 +2579,9 @@ void listarAeronavesEstadoAutorizacao(TipoFrota *frota, int *verificarAirCraft) 
     }
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
-void consultarAeronavePorId(TipoFrota *frota)                               // 10 - Consultar aeronave inserindo o ID disponivel
+void consultarAeronavePorId(TipoFrota *frota, char estadosAeronave[][30])                               // 10 - Consultar aeronave inserindo o ID disponivel
 {
-    int y1, y2, aeronaveEscolhida, posicaoAeronave, aeronaveEncontrada, position = 1, keyPressed = 0, opcao;
-    int numAeronave = 1;
-    char estadoAutorizacao[30] = {"A aguardar autorizacao"};
+    int y1 = 0, y2 = 0, aeronaveEscolhida = 0, posicaoAeronave = 0, aeronaveEncontrada = 0, keyPressed = 0, opcao = 0, position = 1, numAeronave = 1;
 
     if(frota->totalAeronaves == 0)
     {
@@ -2749,7 +2720,7 @@ void consultarAeronavePorId(TipoFrota *frota)                               // 1
             printf("Local atual: %s",frota->aeronaves[posicaoAeronave].localAtual);
             y1 += 2;
 
-            if(strcmp(frota->aeronaves[posicaoAeronave].estado, estadoAutorizacao) == 0)
+            if(strcmp(frota->aeronaves[posicaoAeronave].estado, estadosAeronave[1]) == 0)
             {
                 gotoxy(40,y1);
                 printf("Local do destino: %s",frota->aeronaves[posicaoAeronave].destino);
@@ -2837,35 +2808,6 @@ void consultarAeronavePorId(TipoFrota *frota)                               // 1
         break;
     }
 }
-//-------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-void gravarListagemAeronaves(TipoFrota *frota)                    //Parte 2 // 11 - Gravar listagem de aeronaves para ficheiro de texto
-{
-    desenharBox(80,36);
-    gotoxy(52,7);
-    printf("Gravar listagem de aeronaves para ficheiro de texto");
-    gotoxy(45,13);
-    printf(RED"De momento esta funcionalidade encontrasse em desenvolvimento,");
-    gotoxy(67,15);
-    printf("nao esta disponivel"RESET);
-    gotoxy(43,20);
-    printf("Precione qual quer tecla do teclado para voltar ao menu principal");
-    getch();
-
-//    int i;
-
-    FILE *file;
-
-    file = fopen("Aeronaves.bin" , "wb");
-
-    fwrite(&frota, sizeof(TipoFrota), 1, file);
-
-//    for (i = 0; i < frota->totalAeronaves; i++){
-//        fprintf(f, "\nID Aeronave com ID N%c%d",167, frota->aeronaves[i].id);
-//    }
-    fclose(file);
-}
-*/
 //-------------------------------------------------------------------------------------------------------------------------------------------------------
 void gotoxy(int x, int y)                                                       // Subprograma para movimentar o cursos
 {
