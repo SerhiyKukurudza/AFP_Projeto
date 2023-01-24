@@ -575,7 +575,7 @@ void eliminarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30])        
                 gotoxy(50,14);
                 printf("De momento nao ha aeronaves \"Prontas\" para eliminar,");
                 gotoxy(45,16);
-                printf("pode adicionar aeronave atravez da opcao \"1\" no menu principal");
+                printf("pode adicionar aeronave atraves da opcao \"1\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
@@ -1217,7 +1217,7 @@ void editarAeronaveFrota(TipoFrota *frota, char estadosAeronave[][30], char loca
                 gotoxy(47,16);
                 printf("porque a aeronave ja chegou ao seu limite maximo inicial,");
                 gotoxy(39,18);
-                printf("pode editar ou remover passageiros atravez da opcao \"3\" no menu principal");
+                printf("pode editar ou remover passageiros atraves da opcao \"3\" no menu principal");
                 gotoxy(43,25);
                 printf("Pressione qualquer tecla do teclado para voltar ao menu principal");
                 getch();
